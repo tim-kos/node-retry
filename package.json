@@ -1,7 +1,7 @@
 {
   "author": "Felix Geisendörfer <felix@debuggable.com> (http://debuggable.com/)",
   "name": "retry",
-  "description": "Abstraction for exponential and custom retry for failed operations.",
+  "description": "Abstraction for exponential and custom retry strategies for failed operations.",
   "version": "0.0.1",
   "homepage": "https://github.com/felixge/node-retry",
   "repository": {

@@ -10,7 +10,7 @@ like it, I'll implement it.
 ## Tutorial
 
 The example below will retry a potentially failing `dns.resolve` operation
-10 times using an exponential backoff strategy. With the default settings, this
+1 times using an exponential backoff strategy. With the default settings, this
 works out to about ~17.03 minutes of retrying the operation.
 
 ``` javascript
@@ -41,7 +41,7 @@ backoff. See the API documentation below for all available settings.
 
 ``` javascript
 var operation = retry.operation({
-  time: 60 * 60 * 1000,
+  times: 5,
   factor: 3,
   minTimeout: 1 * 1000,
   maxTimeout: 60 * 1000,
@@ -62,12 +62,27 @@ are given in milliseconds.
 
 `options` is a JS object that can contain any of the following keys:
 
-* `time`: The maximum amount of time for re-trying the operation. Defaults to `30 * 60 * 1000` (30 minutes).
 * `times`: The maximum amount of times to retry the operation. Default is `10`.
-* `factor`: The exponential factor to use. Default is calculated using the other properties. Setting `factor` and `time` together will throw an error.
-* `minTimeout`: The minium amount of time between two retries. Usually only applies to the first retry. Default is `1000` (1 second).
+* `factor`: The exponential factor to use. Default is `2`.
+* `minTimeout`: The minium amount of time between two retries. Usually only applies to the first retry. Default is `1000`.
 * `maxTimeout`: The maximum amount of time between two retries. Default is `Infinity`.
-* `randomize`: Randomizes the timeouts by multiplying with a factor between 1 to 2. Default is `true`.
+* `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `true`.
+
+The formula used to calculate the individual timeouts is:
+
+```
+var timeout = Math.min(random * minTimeout * Math.pow(factor, attempt), maxTimeout);
+```
+
+Have a look at [this article][article] for a better explanation of approach.
+
+If you want to tune your `factor` for a total duration of retries, you can use
+wolfram alpha. For example in order to tune for 10 attempts in 5 minutes, you
+can use this query:
+
+[http://www.wolframalpha.com/input/?i=Sum[x^k,+{k,+0,+10}]+%3D+300]()
+
+[article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
 ## retryOperation.try(fn)
 
