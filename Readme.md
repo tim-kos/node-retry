@@ -11,9 +11,7 @@ like it, I'll implement it.
 
 The example below will retry a potentially failing `dns.resolve` operation
 `10` times using an exponential backoff strategy. With the default settings, this
-means the last attempt is made between `34 minutes and 7 seconds` and `1 hour
-8 minutes and 14 seconds`. Disable `randomize` setting if you want a
-deterministic timeout sequence.
+means the last attempt is made after `34 minutes and 7 seconds`.
 
 ``` javascript
 var dns = require('dns');
@@ -47,7 +45,7 @@ var operation = retry.operation({
   factor: 3,
   minTimeout: 1 * 1000,
   maxTimeout: 60 * 1000,
-  randomize: false,
+  randomize: true,
 });
 ```
 
@@ -68,7 +66,7 @@ are given in milliseconds.
 * `factor`: The exponential factor to use. Default is `2`.
 * `minTimeout`: The minium amount of time between two retries. Usually only applies to the first retry. Default is `1000`.
 * `maxTimeout`: The maximum amount of time between two retries. Default is `Infinity`.
-* `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `true`.
+* `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
 
