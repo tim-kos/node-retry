@@ -53,7 +53,9 @@ var operation = retry.operation({
 
 ### retry.operation([options])
 
-Shortcut for `new RetryOperation(retry.timeouts(options))`.
+Creates a new `RetryOperation` object. If `options` is empty or a JS object,
+it is passed to `retry.timeouts()` first. Otherwise it assumed to be an array
+of timeouts.
 
 ### retry.timeouts([options])
 
