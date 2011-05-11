@@ -53,12 +53,12 @@ var operation = retry.operation({
 
 ### retry.operation([options])
 
-Shortcut for `new RetryOperation(options)`.
+Shortcut for `new RetryOperation(retry.timeouts(options))`.
 
-### new RetryOperation([options])
+### retry.timeouts([options])
 
-Creates a new instance of the `RetryOperation` class. All time related values
-are given in milliseconds.
+Returns an array of timeouts. All time `options` and return values are in
+milliseconds.
 
 `options` is a JS object that can contain any of the following keys:
 
@@ -71,19 +71,39 @@ are given in milliseconds.
 The formula used to calculate the individual timeouts is:
 
 ```
-var timeout = Math.min(random * minTimeout * Math.pow(factor, attempt), maxTimeout);
+var timeout = (attempt === 0)
+  ? 0
+  : Math.min(random * minTimeout * Math.pow(factor, (attempt - 1)), maxTimeout);
 ```
 
 Have a look at [this article][article] for a better explanation of approach.
 
 If you want to tune your `factor` / `times` settings to attempt the last retry
 after a certain amount of time, you can use wolfram alpha. For example in order
-to tune for `10` attempts in `5 minutes`, you can use this
-query:
+to tune for `10` attempts in `5 minutes`, you can use this query:
 
 [http://www.wolframalpha.com/input/?i=Sum%5Bx^k%2C+{k%2C+0%2C+10}%5D+%3D+5+*+60]()
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
+
+### new RetryOperation(timeouts)
+
+Creates a new `RetryOperation` where `timeouts` is an array where each value is
+a timeout given in milliseconds.
+
+## retryOperation.errors = []
+
+An array that holds all errors that have been passed to `retryOperation.retry()`
+so far.
+
+## retryOperation.mainError = null
+
+A reference to the error object that occured most frequently. Errors are
+compared using the `error.message` property.
+
+If no error messages are equal, the last error object is referenced.
+
+If no errors occured so far, the value is `null`.
 
 ## retryOperation.try(fn)
 
