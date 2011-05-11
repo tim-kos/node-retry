@@ -109,8 +109,8 @@ If no errors occured so far, the value is `null`.
 
 #### retryOperation.try(fn)
 
-Defines the function `fn` that is to be retried and executes it for the first
-time right away.
+Defines the function `fn` that is to be retried and executes it after the first
+timeout (which is usually `0`).
 
 #### retryOperation.retry(error)
 
