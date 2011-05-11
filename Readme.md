@@ -93,12 +93,12 @@ to tune for `10` attempts in `5 minutes`, you can use this query:
 Creates a new `RetryOperation` where `timeouts` is an array where each value is
 a timeout given in milliseconds.
 
-### retryOperation.errors = []
+#### retryOperation.errors = []
 
 An array that holds all errors that have been passed to `retryOperation.retry()`
 so far.
 
-### retryOperation.mainError = null
+#### retryOperation.mainError = null
 
 A reference to the error object that occured most frequently. Errors are
 compared using the `error.message` property.
@@ -107,12 +107,12 @@ If no error messages are equal, the last error object is referenced.
 
 If no errors occured so far, the value is `null`.
 
-### retryOperation.try(fn)
+#### retryOperation.try(fn)
 
 Defines the function `fn` that is to be retried and executes it for the first
 time right away.
 
-### retryOperation.retry(error)
+#### retryOperation.retry(error)
 
 Returns `false` when no `error` value is given, or the maximum amount of retries
 has been reached.
