@@ -11,7 +11,9 @@ like it, I'll implement it.
 
 The example below will retry a potentially failing `dns.resolve` operation
 `10` times using an exponential backoff strategy. With the default settings, this
-means the last attempt is made `34 minutes and 7 seconds` after the first one.
+means the last attempt is made between `34 minutes and 7 seconds` and `1 hour
+8 minutes and 14 seconds`. Disable `randomize` setting if you want a
+deterministic timeout sequence.
 
 ``` javascript
 var dns = require('dns');
