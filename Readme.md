@@ -78,10 +78,10 @@ Have a look at [this article][article] for a better explanation of approach.
 
 If you want to tune your `factor` / `times` settings to attempt the last retry
 after a certain amount of time, you can use wolfram alpha. For example in order
-to tune for `10` attempts in `5 minutes` (300 seconds), you can use this
+to tune for `10` attempts in `5 minutes`, you can use this
 query:
 
-[http://www.wolframalpha.com/input/?i=Sum[x^k,+{k,+0,+10}]+%3D+300]()
+[http://www.wolframalpha.com/input/?i=Sum%5Bx^k%2C+{k%2C+0%2C+10}%5D+%3D+5+*+60]()
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
