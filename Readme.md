@@ -10,8 +10,8 @@ like it, I'll implement it.
 ## Tutorial
 
 The example below will retry a potentially failing `dns.resolve` operation
-1 times using an exponential backoff strategy. With the default settings, this
-works out to about ~17.03 minutes of retrying the operation.
+`10` times using an exponential backoff strategy. With the default settings, this
+means the last attempt is made `34 minutes and 7 seconds` after the first one.
 
 ``` javascript
 var dns = require('dns');
