@@ -2,8 +2,6 @@ var common = require('../common');
 var assert = common.assert;
 var retry = require(common.dir.lib + '/retry');
 
-// @TODO Seperate test for randomize
-
 (function testDefaultValues() {
   var operation = retry.operation();
 
