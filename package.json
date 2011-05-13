@@ -1,5 +1,5 @@
 {
-  "author": "Felix Geisendörfer <felix@debuggable.com> (http://debuggable.com/)",
+  "author": "Tim Koschützki <tim@debuggable.com> (http://debuggable.com/)",
   "name": "retry",
   "description": "Abstraction for exponential and custom retry strategies for failed operations.",
   "version": "0.0.1",
@@ -8,7 +8,10 @@
     "type": "git",
     "url": "git://github.com/felixge/node-retry.git"
   },
-  "main": "./lib/retry",
+  "directories": {
+    "lib": "./lib"
+  },
+  "main": "index",
   "engines": {
     "node": "*"
   },
