@@ -2,16 +2,33 @@ var common = require('../common');
 var assert = common.assert;
 var retry = require(common.dir.lib + '/retry');
 
+// @TODO Seperate test for randomize
+
 (function testDefaultValues() {
   var operation = retry.operation();
+
   assert.equal(operation._timeouts.length, 10);
   assert.equal(operation._timeouts[0], 1000);
+  assert.ok(operation._timeouts[1], 2000);
+  assert.ok(operation._timeouts[2], 4000);
+})();
+
+(function testDefaultValuesWithRandomize() {
+  var minTimeout = 5000;
+  var operation = retry.operation({
+    minTimeout: minTimeout,
+    randomize: true
+  });
+
+  assert.equal(operation._timeouts.length, 10);
+  assert.ok(operation._timeouts[0] > minTimeout);
+  assert.ok(operation._timeouts[1] > operation._timeouts[0]);
+  assert.ok(operation._timeouts[2] > operation._timeouts[1]);
 })();
 
 (function testPassedTimeoutsAreUsed() {
-  var operation = retry.operation();
-  timeouts = [1000, 2000, 3000];
-  operation = retry.operation(timeouts);
+  var timeouts = [1000, 2000, 3000];
+  var operation = retry.operation(timeouts);
   assert.deepEqual(timeouts, operation._timeouts);
 })();
 
