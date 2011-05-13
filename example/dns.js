@@ -2,7 +2,14 @@ var dns = require('dns');
 var retry = require('../lib/retry');
 
 function faultTolerantResolve(address, cb) {
-  var operation = retry.operation();
+  var opts = {
+    times: 2,
+    factor: 2,
+    minTimeout: 1 * 1000,
+    maxTimeout: 2 * 1000,
+    randomize: true
+  };
+  var operation = retry.operation(opts);
 
   operation.try(function() {
     dns.resolve(address, function(err, addresses) {
@@ -16,5 +23,9 @@ function faultTolerantResolve(address, cb) {
 }
 
 faultTolerantResolve('nodejs.org', function(err, errors, addresses) {
-  console.log(err, errors, addresses);
+  console.warn('err:');
+  console.log(err);
+
+  console.warn('addresses:');
+  console.log(addresses);
 });
