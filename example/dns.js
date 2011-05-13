@@ -6,8 +6,7 @@ function faultTolerantResolve(address, cb) {
 
   operation.try(function() {
     dns.resolve(address, function(err, addresses) {
-      var result = operation.retry(err);
-      if (!result) {
+      if (operation.retry(err)) {
         return;
       }
 
