@@ -14,7 +14,7 @@ var retry = require(common.dir.lib + '/retry');
   assert.deepEqual(operation.errors(), [error, error2]);
 })();
 
-(function testMainError() {
+(function testMainErrorReturnsMostFrequentError() {
   var operation = retry.operation();
   var error = new Error('some error');
   var error2 = new Error('some other error');
@@ -24,6 +24,17 @@ var retry = require(common.dir.lib + '/retry');
   operation._errors.push(error);
 
   assert.strictEqual(operation.mainError(), error);
+})();
+
+(function testMainErrorReturnsLastErrorOnEqualCount() {
+  var operation = retry.operation();
+  var error = new Error('some error');
+  var error2 = new Error('some other error');
+
+  operation._errors.push(error);
+  operation._errors.push(error2);
+
+  assert.strictEqual(operation.mainError(), error2);
 })();
 
 (function testTry() {
