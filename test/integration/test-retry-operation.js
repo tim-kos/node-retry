@@ -47,31 +47,24 @@ var retry = require(common.dir.lib + '/retry');
 (function testRetry() {
   var times = 3;
   var error = new Error('some error');
-  var fn2 = function(cb) {
-    cb(error);
-  }
+  var operation = retry.operation([1, 2, 3]);
+  var retries = 0;
 
-  var operation = retry.operation([100, 200, 300]);
-  var fn = function(outerCb) {
+  var finalCallback = fake.callback('finalCallback');
+  fake.expectAnytime(finalCallback);
+
+  var fn = function() {
     operation.try(function() {
-      fn2(function(err) {
-        if (operation.retry(err)) {
-          return;
-        }
+      if (operation.retry(error)) {
+        retries++;
+        return;
+      }
 
-        outerCb(operation.mainError(), operation.errors());
-      });
+      assert.strictEqual(retries, 3);
+      assert.strictEqual(operation.mainError(), error);
+      finalCallback();
     });
   };
 
-  fake
-    .expect(operation, 'retry')
-    .withArgs(error)
-    .times(3);
-
-  outerCb = function(mainError, errors) {
-    console.warn(mainError);
-    console.warn(errors);
-  };
-  fn(outerCb);
+  fn();
 })();
