@@ -52,3 +52,8 @@ var retry = require(common.dir.lib + '/retry');
     lastTimeout = timeouts[i];
   }
 })();
+
+(function testRetries() {
+  var timeouts = retry.timeouts({retries: 2});
+  assert.strictEqual(timeouts.length, 2);
+})();
