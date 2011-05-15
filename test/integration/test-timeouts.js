@@ -25,9 +25,9 @@ var retry = require(common.dir.lib + '/retry');
 })();
 
 (function testPassedTimeoutsAreUsed() {
-  var timeouts = [1000, 2000, 3000];
-  var operation = retry.operation(timeouts);
-  assert.deepEqual(timeouts, operation._timeouts);
+  var timeoutsArray = [1000, 2000, 3000];
+  var timeouts = retry.timeouts(timeoutsArray);
+  assert.deepEqual(timeouts, timeoutsArray);
 })();
 
 (function testTimeoutsAreWithinBoundaries() {
