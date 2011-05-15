@@ -116,3 +116,7 @@ has been reached.
 
 Otherwise it returns `true`, and retries the operation after the timeout for
 the current attempt number.
+
+## License
+
+retry is licensed under the MIT license.
