@@ -28,6 +28,7 @@ var retry = require(common.dir.lib + '/retry');
   var timeoutsArray = [1000, 2000, 3000];
   var timeouts = retry.timeouts(timeoutsArray);
   assert.deepEqual(timeouts, timeoutsArray);
+  assert.notStrictEqual(timeouts, timeoutsArray);
 })();
 
 (function testTimeoutsAreWithinBoundaries() {
