@@ -23,8 +23,7 @@ var retry = require(common.dir.lib + '/retry');
   operation._errors.push(error2);
   operation._errors.push(error);
 
-  error = {msg: 'some error', occurrences: 2};
-  assert.deepEqual(operation.mainError(), error);
+  assert.strictEqual(operation.mainError(), error);
 })();
 
 (function testTry() {
