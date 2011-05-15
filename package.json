@@ -16,5 +16,8 @@
     "node": "*"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "fake": "0.2.0",
+    "far": "0.0.1"
+  }
 }
