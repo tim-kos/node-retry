@@ -23,7 +23,7 @@ var retry = require('retry');
 function faultTolerantResolve(address, cb) {
   var operation = retry.operation();
 
-  operation.try(function() {
+  operation.try(function(currentAttempt) {
     dns.resolve(address, function(err, addresses) {
       if (operation.retry(err)) {
         return;
@@ -41,6 +41,7 @@ faultTolerantResolve('nodejs.org', function(err, addresses) {
 
 Of course you can also configure the factors that go into the exponential
 backoff. See the API documentation below for all available settings.
+currentAttempt is an int representing the number of attempts so far.
 
 ``` javascript
 var operation = retry.operation({
@@ -111,7 +112,7 @@ If no errors occured so far, the value is `null`.
 #### retryOperation.try(fn)
 
 Defines the function `fn` that is to be retried and executes it for the first
-time right away.
+time right away. The `fn` function can receive an optional `currentAttempt` callback that represents the number of attempts to execute `fn` so far.
 
 #### retryOperation.retry(error)
 
@@ -120,6 +121,10 @@ has been reached.
 
 Otherwise it returns `true`, and retries the operation after the timeout for
 the current attempt number.
+
+#### retryOperation.attempts()
+
+Returns an int representing the number of attempts it took to call `fn` before it was successful.
 
 ## License
 
