@@ -4,8 +4,7 @@ Abstraction for exponential and custom retry strategies for failed operations.
 
 ## Current Status
 
-At this point I'm just writing the Readme to get a feel for the API. Once I
-like it, I'll implement it.
+This module has been tested and is ready to be used.
 
 ## Tutorial
 
@@ -26,7 +25,7 @@ function faultTolerantResolve(address, cb) {
         return;
       }
 
-      cb(operation.mainError, addresses);
+      cb(operation.mainError(), addresses);
     });
   });
 }
@@ -41,7 +40,7 @@ backoff. See the API documentation below for all available settings.
 
 ``` javascript
 var operation = retry.operation({
-  times: 5,
+  retries: 5,
   factor: 3,
   minTimeout: 1 * 1000,
   maxTimeout: 60 * 1000,
@@ -53,29 +52,26 @@ var operation = retry.operation({
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. If `options` is empty or a JS object,
-it is passed to `retry.timeouts()` first. Otherwise it assumed to be an array
-of timeouts.
+Creates a new `RetryOperation` object. See the `retry.timeouts()` function
+below for available `options`.
 
 ### retry.timeouts([options])
 
 Returns an array of timeouts. All time `options` and return values are in
-milliseconds.
+milliseconds. If `options` is an array, a copy of that array is returned.
 
 `options` is a JS object that can contain any of the following keys:
 
-* `times`: The maximum amount of times to retry the operation. Default is `10`.
+* `retries`: The maximum amount of times to retry the operation. Default is `10`.
 * `factor`: The exponential factor to use. Default is `2`.
-* `minTimeout`: The minium amount of time between two retries. Usually only applies to the first retry. Default is `1000`.
+* `minTimeout`: The amount of time before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum amount of time between two retries. Default is `Infinity`.
 * `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
 
 ```
-var timeout = (attempt === 0)
-  ? 0
-  : Math.min(random * minTimeout * Math.pow(factor, (attempt - 1)), maxTimeout);
+var Math.min(random * minTimeout * Math.pow(factor, attempt), maxTimeout);
 ```
 
 Have a look at [this article][article] for a better explanation of approach.
@@ -84,7 +80,7 @@ If you want to tune your `factor` / `times` settings to attempt the last retry
 after a certain amount of time, you can use wolfram alpha. For example in order
 to tune for `10` attempts in `5 minutes`, you can use this query:
 
-[http://www.wolframalpha.com/input/?i=Sum%5Bx^k%2C+{k%2C+0%2C+10}%5D+%3D+5+*+60]()
+[http://www.wolframalpha.com/input/?i=Sum%5Bx^k%2C+{k%2C+0%2C+9}%5D+%3D+5+*+60]()
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
@@ -93,31 +89,34 @@ to tune for `10` attempts in `5 minutes`, you can use this query:
 Creates a new `RetryOperation` where `timeouts` is an array where each value is
 a timeout given in milliseconds.
 
-#### retryOperation.errors = []
+#### retryOperation.errors()
 
-An array that holds all errors that have been passed to `retryOperation.retry()`
-so far.
+Returns an array of all errors that have been passed to
+`retryOperation.retry()` so far.
 
-#### retryOperation.mainError = null
+#### retryOperation.mainError()
 
 A reference to the error object that occured most frequently. Errors are
 compared using the `error.message` property.
 
-If no error messages are equal, the last error object is referenced.
+If multiple error messages occured the same amount of time, the last error
+object with that message is returned.
 
 If no errors occured so far, the value is `null`.
 
 #### retryOperation.try(fn)
 
-Defines the function `fn` that is to be retried and executes it after the first
-timeout (which is usually `0`).
+Defines the function `fn` that is to be retried and executes it for the first
+time right away.
 
 #### retryOperation.retry(error)
 
 Returns `false` when no `error` value is given, or the maximum amount of retries
 has been reached.
 
-Otherwise it executes the operation again, and returns `true`. It also typecasts
-the `error` value into an `Error` object as neccessary, and adds it to the
-list of `retryOperation.errors`. This list is kept to determine the
-`retryOperation.mainError`.
+Otherwise it returns `true`, and retries the operation after the timeout for
+the current attempt number.
+
+## License
+
+retry is licensed under the MIT license.
