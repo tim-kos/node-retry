@@ -7,8 +7,8 @@ var retry = require(common.dir.lib + '/retry');
 
   assert.equal(timeouts.length, 10);
   assert.equal(timeouts[0], 1000);
-  assert.ok(timeouts[1], 2000);
-  assert.ok(timeouts[2], 4000);
+  assert.equal(timeouts[1], 2000);
+  assert.equal(timeouts[2], 4000);
 })();
 
 (function testDefaultValuesWithRandomize() {
