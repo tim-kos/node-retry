@@ -2,6 +2,10 @@
 
 Abstraction for exponential and custom retry strategies for failed operations.
 
+## Installation
+
+    npm install mysql
+
 ## Current Status
 
 This module has been tested and is ready to be used.
