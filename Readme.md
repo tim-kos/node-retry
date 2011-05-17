@@ -4,7 +4,7 @@ Abstraction for exponential and custom retry strategies for failed operations.
 
 ## Installation
 
-    npm install mysql
+    npm install retry
 
 ## Current Status
 
