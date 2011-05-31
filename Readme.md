@@ -133,3 +133,10 @@ Returns an int representing the number of attempts it took to call `fn` before i
 ## License
 
 retry is licensed under the MIT license.
+
+
+#Changelog
+
+0.3.0 Added retryOperation.start() which is an alias for retryOperation.try().
+
+0.2.0 Added attempts() function and parameter to retryOperation.try() representing the number of attempts it took to call fn().
