@@ -114,6 +114,10 @@ If no errors occured so far, the value is `null`.
 Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function can receive an optional `currentAttempt` callback that represents the number of attempts to execute `fn` so far.
 
+#### retryOperation.start(fn)
+
+This is an alias for `retryOperation.try(fn)`.
+
 #### retryOperation.retry(error)
 
 Returns `false` when no `error` value is given, or the maximum amount of retries
