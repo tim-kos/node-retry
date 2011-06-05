@@ -11,7 +11,7 @@ function faultTolerantResolve(address, cb) {
   };
   var operation = retry.operation(opts);
 
-  operation.try(function(currentAttempt) {
+  operation.attempt(function(currentAttempt) {
     dns.resolve(address, function(err, addresses) {
       if (operation.retry(err)) {
         return;

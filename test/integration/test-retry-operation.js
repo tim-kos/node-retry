@@ -40,7 +40,7 @@ var retry = require(common.dir.lib + '/retry');
 (function testTry() {
   var operation = retry.operation();
   var fn = new Function();
-  operation.try(fn);
+  operation.attempt(fn);
   assert.strictEqual(fn, operation._fn);
 })();
 
@@ -54,7 +54,7 @@ var retry = require(common.dir.lib + '/retry');
   fake.expectAnytime(finalCallback);
 
   var fn = function() {
-    operation.try(function(currentAttempt) {
+    operation.attempt(function(currentAttempt) {
       attempts++;
       assert.equal(currentAttempt, attempts);
       if (operation.retry(error)) {

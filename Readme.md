@@ -23,7 +23,7 @@ var retry = require('retry');
 function faultTolerantResolve(address, cb) {
   var operation = retry.operation();
 
-  operation.try(function(currentAttempt) {
+  operation.attempt(function(currentAttempt) {
     dns.resolve(address, function(err, addresses) {
       if (operation.retry(err)) {
         return;
@@ -109,14 +109,18 @@ object with that message is returned.
 
 If no errors occured so far, the value is `null`.
 
-#### retryOperation.try(fn)
+#### retryOperation.attempt(fn)
 
 Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function can receive an optional `currentAttempt` callback that represents the number of attempts to execute `fn` so far.
 
+#### retryOperation.try(fn)
+
+This is an alias for `retryOperation.attempt(fn)`. This is deprecated.
+
 #### retryOperation.start(fn)
 
-This is an alias for `retryOperation.try(fn)`.
+This is an alias for `retryOperation.attempt(fn)`. This is deprecated.
 
 #### retryOperation.retry(error)
 
@@ -136,6 +140,8 @@ retry is licensed under the MIT license.
 
 
 #Changelog
+
+0.4.0 Changed retryOperation.try() to retryOperation.attempt(). Deprecated the aliases start() and try() for it.
 
 0.3.0 Added retryOperation.start() which is an alias for retryOperation.try().
 
