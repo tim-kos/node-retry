@@ -83,9 +83,20 @@ Have a look at [this article][article] for a better explanation of approach.
 
 If you want to tune your `factor` / `times` settings to attempt the last retry
 after a certain amount of time, you can use wolfram alpha. For example in order
-to tune for `10` attempts in `5 minutes`, you can use this query:
+to tune for `10` attempts in `5 minutes`, you can use this equation:
 
-[http://www.wolframalpha.com/input/?i=Sum%5Bx^k%2C+{k%2C+0%2C+9}%5D+%3D+5+*+60]()
+![screenshot](https://github.com/tim-kos/node-retry/raw/master/equation.gif)
+
+Explaining the various values from left to right:
+
+* `k = 0 ... 9`:  The `retries` value (10)
+* `1000`: The `minTimeout` value in ms (1000)
+* `x^k`: No need to change this, `x` will be your resulting factor
+* `5 * 60 * 1000`: The desired total amount of time for retrying in ms (5 minutes)
+
+To make this a little easier for you, use wolfram alpha to do the calculations:
+
+[http://www.wolframalpha.com/input/?i=Sum%5B1000*x^k%2C+{k%2C+0%2C+9}%5D+%3D+5+*+60+*+1000]()
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
