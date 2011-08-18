@@ -120,10 +120,14 @@ object with that message is returned.
 
 If no errors occured so far, the value is `null`.
 
-#### retryOperation.attempt(fn)
+#### retryOperation.attempt(fn, timeoutOps)
 
 Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function can receive an optional `currentAttempt` callback that represents the number of attempts to execute `fn` so far.
+
+Optionally defines `timeoutOps` which is an object having a property `timeout` in miliseconds and a property `cb` callback function.
+Whenever your retry operation takes longer than `timeout` to execute, the timeout callback function `cb` is called.
+
 
 #### retryOperation.try(fn)
 

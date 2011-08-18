@@ -37,11 +37,19 @@ var retry = require(common.dir.lib + '/retry');
   assert.strictEqual(operation.mainError(), error2);
 })();
 
-(function testTry() {
+(function testAttempt() {
   var operation = retry.operation();
   var fn = new Function();
-  operation.attempt(fn);
+
+  var timeoutOpts = {
+    timeout: 1,
+    cb: function() {}
+  };
+  operation.attempt(fn, timeoutOpts);
+
   assert.strictEqual(fn, operation._fn);
+  assert.strictEqual(timeoutOpts.timeout, operation._operationTimeout);
+  assert.strictEqual(timeoutOpts.cb, operation._operationTimeoutCb);
 })();
 
 (function testRetry() {
