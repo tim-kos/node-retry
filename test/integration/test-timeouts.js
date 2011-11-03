@@ -53,6 +53,16 @@ var retry = require(common.dir.lib + '/retry');
   }
 })();
 
+(function testTimeoutsAreIncrementalForFactorsLessThanOne() {
+  var timeouts = retry.timeouts({
+    retries: 3,
+    factor: 0.5
+  });
+
+  var expected = [250, 500, 1000];
+  assert.deepEqual(expected, timeouts);
+})();
+
 (function testRetries() {
   var timeouts = retry.timeouts({retries: 2});
   assert.strictEqual(timeouts.length, 2);
