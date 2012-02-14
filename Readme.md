@@ -156,7 +156,9 @@ retry is licensed under the MIT license.
 
 #Changelog
 
-0.5.0 Introduced optional timeOps parameter for the attempt() function which is an object having a property timeout in miliseconds and a property cb callback function. Whenever your retry operation takes longer than timeout to execute, the timeout callback function cb is called.
+0.6.0 Introduced optional timeOps parameter for the attempt() function which is an object having a property timeout in miliseconds and a property cb callback function. Whenever your retry operation takes longer than timeout to execute, the timeout callback function cb is called.
+
+0.5.0 Some minor refactorings.
 
 0.4.0 Changed retryOperation.try() to retryOperation.attempt(). Deprecated the aliases start() and try() for it.
 
