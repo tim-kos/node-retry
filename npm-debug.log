@@ -1,0 +1,284 @@
+info it worked if it ends with ok
+verbose cli [ 'node', '/opt/local/bin/npm', 'publish', '.' ]
+info using npm@1.0.103
+info using node@v0.4.12
+verbose config file /Users/darkangelbge/.npmrc
+verbose config file /usr/local/etc/npmrc
+verbose config file /usr/local/lib/node_modules/npm/npmrc
+verbose publish [ '.' ]
+silly testEngine { author: 
+silly testEngine    { name: 'Tim Koschützki',
+silly testEngine      email: 'tim@debuggable.com',
+silly testEngine      url: 'http://debuggable.com/' },
+silly testEngine   name: 'retry',
+silly testEngine   description: 'Abstraction for exponential and custom retry strategies for failed operations.',
+silly testEngine   version: '0.5.0',
+silly testEngine   homepage: 'https://github.com/tim-kos/node-retry',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/felixge/node-retry.git' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '*' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: { fake: '0.2.0', far: '0.0.1' },
+silly testEngine   _npmUser: { name: 'tim-kos', email: 'tim@debuggable.com' },
+silly testEngine   _id: 'retry@0.5.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.103',
+silly testEngine   _nodeVersion: 'v0.4.12',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   scripts: {} }
+verbose caching /opt/local/apache2/htdocs/node_fun/node-retry/package.json
+verbose loadDefaults retry@0.5.0
+info prepublish retry@0.5.0
+verbose cache add [ '.', null ]
+silly cache add: name, spec, args [ undefined, '.', [ '.', null ] ]
+verbose parsed url { pathname: '.', href: '.' }
+silly testEngine { author: 
+silly testEngine    { name: 'Tim Koschützki',
+silly testEngine      email: 'tim@debuggable.com',
+silly testEngine      url: 'http://debuggable.com/' },
+silly testEngine   name: 'retry',
+silly testEngine   description: 'Abstraction for exponential and custom retry strategies for failed operations.',
+silly testEngine   version: '0.5.0',
+silly testEngine   homepage: 'https://github.com/tim-kos/node-retry',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/felixge/node-retry.git' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '*' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: { fake: '0.2.0', far: '0.0.1' },
+silly testEngine   _npmUser: { name: 'tim-kos', email: 'tim@debuggable.com' },
+silly testEngine   _id: 'retry@0.5.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.103',
+silly testEngine   _nodeVersion: 'v0.4.12',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   path: '/opt/local/apache2/htdocs/node_fun/node-retry',
+silly testEngine   bundleDependencies: [] }
+verbose caching package.json
+verbose loadDefaults retry@0.5.0
+verbose pack /opt/local/apache2/htdocs/node_fun/node-retry /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/tmp.tgz
+verbose mkdir (expected) error ENOENT, No such file or directory '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026'
+verbose mkdir (expected) error ENOENT, No such file or directory '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256'
+verbose mkdir done: /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256 755
+verbose mkdir'ed /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256
+verbose tar about to write tar and gzip it.
+silly tar args [ '-czvf', '-', '-T', '-' ]
+silly spawning [ 'tar',
+silly spawning   [ '-czvf', '-', '-T', '-' ],
+silly spawning   '/opt/local/apache2/htdocs/node_fun' ]
+verbose mkdir (expected) error ENOENT, No such file or directory '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents'
+verbose mkdir (expected) error ENOENT, No such file or directory '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm'
+verbose mkdir done: /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package
+silly gunzTarPerm modes [ '755', '644' ]
+silly spawning [ 'tar',
+silly spawning   [ '-zmvxpf',
+silly spawning     '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/tmp.tgz',
+silly spawning     '-o' ],
+silly spawning   '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm' ]
+silly tar out node-retry/.gitignore
+silly tar out node-retry/equation.gif
+silly tar out node-retry/index.js
+silly tar out node-retry/License
+silly tar out node-retry/Makefile
+silly tar out node-retry/package.json
+silly tar out node-retry/Readme.md
+silly tar out node-retry/example/dns.js
+silly tar out node-retry/lib/retry.js
+silly tar out node-retry/lib/retry_operation.js
+silly tar out node-retry/test/common.js
+silly tar out node-retry/test/runner.js
+silly tar out node-retry/test/integration/test-retry-operation.js
+silly tar out node-retry/test/integration/test-timeouts.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/.gitignore
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/equation.gif
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/index.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/License
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/Makefile
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/package.json
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/Readme.md
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/example
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/example/dns.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/lib
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/lib/retry.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/lib/retry_operation.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/test
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/test/common.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/test/runner.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/test/integration
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/test/integration/test-retry-operation.js
+silly asyncMap in gTP /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry/test/integration/test-timeouts.js
+verbose gunzed /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry
+verbose rm'ed /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package
+verbose renamed [ '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/___package.npm/node-retry',
+verbose renamed   '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package' ]
+silly testEngine { author: 
+silly testEngine    { name: 'Tim Koschützki',
+silly testEngine      email: 'tim@debuggable.com',
+silly testEngine      url: 'http://debuggable.com/' },
+silly testEngine   name: 'retry',
+silly testEngine   description: 'Abstraction for exponential and custom retry strategies for failed operations.',
+silly testEngine   version: '0.5.0',
+silly testEngine   homepage: 'https://github.com/tim-kos/node-retry',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/felixge/node-retry.git' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '*' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: { fake: '0.2.0', far: '0.0.1' },
+silly testEngine   _npmUser: { name: 'tim-kos', email: 'tim@debuggable.com' },
+silly testEngine   _id: 'retry@0.5.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.103',
+silly testEngine   _nodeVersion: 'v0.4.12',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   path: '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package' }
+verbose caching /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package/package.json
+verbose loadDefaults retry@0.5.0
+verbose tarball contents [ 'package' ]
+verbose from cache /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package/package.json
+verbose pack /var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents/package /Users/darkangelbge/.npm/retry/0.5.0/package.tgz
+verbose mkdir'ed /Users/darkangelbge/.npm/retry/0.5.0
+verbose tar about to write tar and gzip it.
+silly tar args [ '-czvf', '-', '-T', '-' ]
+silly spawning [ 'tar',
+silly spawning   [ '-czvf', '-', '-T', '-' ],
+silly spawning   '/var/folders/NB/NBExcAYCF0yOUfLejUwKlU+++TI/-Tmp-/npm-1329208227026/1329208227026-0.6315619414672256/contents' ]
+verbose mkdir (expected) error ENOENT, No such file or directory '/Users/darkangelbge/.npm/retry/0.5.0/___package.npm'
+verbose mkdir done: /Users/darkangelbge/.npm/retry/0.5.0/___package.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget /Users/darkangelbge/.npm/retry/0.5.0/package
+silly gunzTarPerm modes [ '755', '644' ]
+silly spawning [ 'tar',
+silly spawning   [ '-zmvxpf',
+silly spawning     '/Users/darkangelbge/.npm/retry/0.5.0/package.tgz',
+silly spawning     '-o' ],
+silly spawning   '/Users/darkangelbge/.npm/retry/0.5.0/___package.npm' ]
+silly tar out package/.gitignore
+silly tar out package/equation.gif
+silly tar out package/index.js
+silly tar out package/License
+silly tar out package/Makefile
+silly tar out package/package.json
+silly tar out package/Readme.md
+silly tar out package/example/dns.js
+silly tar out package/lib/retry.js
+silly tar out package/lib/retry_operation.js
+silly tar out package/test/common.js
+silly tar out package/test/runner.js
+silly tar out package/test/integration/test-retry-operation.js
+silly tar out package/test/integration/test-timeouts.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/.gitignore
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/equation.gif
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/index.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/License
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/Makefile
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/package.json
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/Readme.md
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/example
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/example/dns.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/lib
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/lib/retry.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/lib/retry_operation.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/test
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/test/common.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/test/runner.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/test/integration
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/test/integration/test-retry-operation.js
+silly asyncMap in gTP /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package/test/integration/test-timeouts.js
+verbose gunzed /Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package
+verbose rm'ed /Users/darkangelbge/.npm/retry/0.5.0/package
+verbose renamed [ '/Users/darkangelbge/.npm/retry/0.5.0/___package.npm/package',
+verbose renamed   '/Users/darkangelbge/.npm/retry/0.5.0/package' ]
+silly testEngine { author: 
+silly testEngine    { name: 'Tim Koschützki',
+silly testEngine      email: 'tim@debuggable.com',
+silly testEngine      url: 'http://debuggable.com/' },
+silly testEngine   name: 'retry',
+silly testEngine   description: 'Abstraction for exponential and custom retry strategies for failed operations.',
+silly testEngine   version: '0.5.0',
+silly testEngine   homepage: 'https://github.com/tim-kos/node-retry',
+silly testEngine   repository: 
+silly testEngine    { type: 'git',
+silly testEngine      url: 'git://github.com/felixge/node-retry.git' },
+silly testEngine   directories: { lib: './lib' },
+silly testEngine   main: 'index',
+silly testEngine   engines: { node: '*' },
+silly testEngine   dependencies: {},
+silly testEngine   devDependencies: { fake: '0.2.0', far: '0.0.1' },
+silly testEngine   _npmUser: { name: 'tim-kos', email: 'tim@debuggable.com' },
+silly testEngine   _id: 'retry@0.5.0',
+silly testEngine   _engineSupported: true,
+silly testEngine   _npmVersion: '1.0.103',
+silly testEngine   _nodeVersion: 'v0.4.12',
+silly testEngine   _defaultsLoaded: true,
+silly testEngine   dist: 
+silly testEngine    { shasum: 'b7388442c39a18868c57ed1e6770cd27dbdcf373',
+silly testEngine      tarball: 'http://registry.npmjs.org/retry/-/retry-0.5.0.tgz' } }
+verbose caching /Users/darkangelbge/.npm/retry/0.5.0/package/package.json
+verbose loadDefaults retry@0.5.0
+silly updated sha bytes 10240
+info shasum b7388442c39a18868c57ed1e6770cd27dbdcf373
+info shasum /Users/darkangelbge/.npm/retry/0.5.0/package.tgz
+verbose from cache /Users/darkangelbge/.npm/retry/0.5.0/package/package.json
+verbose chmod /Users/darkangelbge/.npm/retry/0.5.0/package.tgz 644
+verbose chown [ '/Users/darkangelbge/.npm/retry/0.5.0/package.tgz',
+verbose chown   501,
+verbose chown   20 ]
+silly publish { author: 
+silly publish    { name: 'Tim Koschützki',
+silly publish      email: 'tim@debuggable.com',
+silly publish      url: 'http://debuggable.com/' },
+silly publish   name: 'retry',
+silly publish   description: 'Abstraction for exponential and custom retry strategies for failed operations.',
+silly publish   version: '0.5.0',
+silly publish   homepage: 'https://github.com/tim-kos/node-retry',
+silly publish   repository: 
+silly publish    { type: 'git',
+silly publish      url: 'git://github.com/felixge/node-retry.git' },
+silly publish   directories: { lib: './lib' },
+silly publish   main: 'index',
+silly publish   engines: { node: '*' },
+silly publish   dependencies: {},
+silly publish   devDependencies: { fake: '0.2.0', far: '0.0.1' },
+silly publish   _npmUser: { name: 'tim-kos', email: 'tim@debuggable.com' },
+silly publish   _id: 'retry@0.5.0',
+silly publish   _engineSupported: true,
+silly publish   _npmVersion: '1.0.103',
+silly publish   _nodeVersion: 'v0.4.12',
+silly publish   _defaultsLoaded: true,
+silly publish   dist: 
+silly publish    { shasum: 'b7388442c39a18868c57ed1e6770cd27dbdcf373',
+silly publish      tarball: 'http://registry.npmjs.org/retry/-/retry-0.5.0.tgz' } }
+verbose PUT retry
+verbose raw, before any munging retry
+verbose url resolving [ 'https://registry.npmjs.org/', './retry' ]
+verbose url resolved https://registry.npmjs.org/retry
+verbose GET retry
+verbose raw, before any munging retry
+verbose url resolving [ 'https://registry.npmjs.org/', './retry' ]
+verbose url resolved https://registry.npmjs.org/retry
+info Already published retry@0.5.0
+verbose uploading bin dists []
+ERR! publish fail Cannot publish over existing version.
+ERR! publish fail Bump the 'version' field, set the --force flag, or
+ERR! publish fail     npm unpublish 'retry@0.5.0'
+ERR! publish fail and try again
+ERR! 
+ERR! System Darwin 9.8.0
+ERR! command "node" "/opt/local/bin/npm" "publish" "."
+ERR! cwd /opt/local/apache2/htdocs/node_fun/node-retry
+ERR! node -v v0.4.12
+ERR! npm -v 1.0.103
+ERR! code EPUBLISHCONFLICT
+verbose exit [ 1, true ]
