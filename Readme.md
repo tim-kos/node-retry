@@ -29,7 +29,7 @@ function faultTolerantResolve(address, cb) {
         return;
       }
 
-      cb(operation.mainError(), addresses);
+      cb(err ? operation.mainError() : null, addresses);
     });
   });
 }
