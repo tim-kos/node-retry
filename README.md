@@ -100,6 +100,21 @@ To make this a little easier for you, use wolfram alpha to do the calculations:
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
+### retry.wrap(obj, [options], [methodNames])
+
+Wrap all functions of the `obj` with retry. Optionally you can pass operation options and
+an array of method names which need to be wrapped.
+
+```
+retry.wrap(myLib)
+
+retry.wrap(myLib, ['method1', 'method2']);
+
+retry.wrap(myLib, {retries: 3});
+
+retry.wrap(myLib, {retries: 3}, ['method1', 'method2']);
+```
+
 ### new RetryOperation(timeouts)
 
 Creates a new `RetryOperation` where `timeouts` is an array where each value is
