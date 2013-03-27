@@ -6,7 +6,7 @@
   "homepage": "https://github.com/tim-kos/node-retry",
   "repository": {
     "type": "git",
-    "url": "git://github.com/felixge/node-retry.git"
+    "url": "git://github.com/tim-kos/node-retry.git"
   },
   "directories": {
     "lib": "./lib"
