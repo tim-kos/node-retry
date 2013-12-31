@@ -69,8 +69,8 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 
 * `retries`: The maximum amount of times to retry the operation. Default is `10`.
 * `factor`: The exponential factor to use. Default is `2`.
-* `minTimeout`: The amount of time before starting the first retry. Default is `1000`.
-* `maxTimeout`: The maximum amount of time between two retries. Default is `Infinity`.
+* `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
+* `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.
 * `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
