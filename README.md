@@ -14,7 +14,7 @@ This module has been tested and is ready to be used.
 
 The example below will retry a potentially failing `dns.resolve` operation
 `10` times using an exponential backoff strategy. With the default settings, this
-means the last attempt is made after `34 minutes and 7 seconds`.
+means the last attempt is made after `17 minutes and 3 seconds`.
 
 ``` javascript
 var dns = require('dns');
