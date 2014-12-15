@@ -96,7 +96,7 @@ Explaining the various values from left to right:
 
 To make this a little easier for you, use wolfram alpha to do the calculations:
 
-[http://www.wolframalpha.com/input/?i=Sum%5B1000*x^k%2C+{k%2C+0%2C+9}%5D+%3D+5+*+60+*+1000]()
+http://www.wolframalpha.com/input/?i=Sum%5B1000*x^k%2C+{k%2C+0%2C+9}%5D+%3D+5+*+60+*+1000
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
