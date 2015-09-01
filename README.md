@@ -100,6 +100,17 @@ To make this a little easier for you, use wolfram alpha to do the calculations:
 
 [article]: http://dthain.blogspot.com/2009/02/exponential-backoff-in-distributed.html
 
+### retry.createTimeout(attempt, opts)
+
+Returns a new `timeout` (integer in milliseconds) based on the given parameters.
+
+`attempt` is an integer representing for which retry the timeout should be calculated. If your retry operation was executed 4 times you had one attempt and 3 retries. If you then want to calculate a new timeout, you should set `attempt` to 4 (attempts are zero-indexed).
+
+`opts` can include `factor`, `minTimeout`, `randomize` (boolean) and `maxTimeout`. They are documented above.
+
+`retry.createTimeout()` is used internally by `retry.timeouts()` and is public for you to be able to create your own timeouts for reinserting an item, see [issue #13](https://github.com/tim-kos/node-retry/issues/13).
+
+
 ### new RetryOperation(timeouts)
 
 Creates a new `RetryOperation` where `timeouts` is an array where each value is
