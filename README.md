@@ -110,6 +110,21 @@ Returns a new `timeout` (integer in milliseconds) based on the given parameters.
 
 `retry.createTimeout()` is used internally by `retry.timeouts()` and is public for you to be able to create your own timeouts for reinserting an item, see [issue #13](https://github.com/tim-kos/node-retry/issues/13).
 
+### retry.wrap(obj, [options], [methodNames])
+
+Wrap all functions of the `obj` with retry. Optionally you can pass operation options and
+an array of method names which need to be wrapped.
+
+```
+retry.wrap(obj)
+
+retry.wrap(obj, ['method1', 'method2']);
+
+retry.wrap(obj, {retries: 3});
+
+retry.wrap(obj, {retries: 3}, ['method1', 'method2']);
+```
+The `options` object can take any options that the usual call to `retry.operation` can take.
 
 ### new RetryOperation(timeouts)
 
