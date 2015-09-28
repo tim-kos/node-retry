@@ -157,11 +157,11 @@ Whenever your retry operation takes longer than `timeout` to execute, the timeou
 
 #### retryOperation.try(fn)
 
-This is an alias for `retryOperation.attempt(fn)`. This is deprecated.
+This is an alias for `retryOperation.attempt(fn)`. This is deprecated. Please use `retryOperation.attempt(fn)` instead.
 
 #### retryOperation.start(fn)
 
-This is an alias for `retryOperation.attempt(fn)`. This is deprecated.
+This is an alias for `retryOperation.attempt(fn)`. This is deprecated. Please use `retryOperation.attempt(fn)` instead.
 
 #### retryOperation.retry(error)
 
