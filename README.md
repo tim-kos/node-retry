@@ -57,8 +57,9 @@ var operation = retry.operation({
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. See the `retry.timeouts()` function
-below for available `options`.
+Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with one addition:
+
+* `forever`: Whether to retry forever (`retryForever` parameter of `RetryOperation`). Default is `false`.
 
 ### retry.timeouts([options])
 
@@ -126,10 +127,17 @@ retry.wrap(obj, {retries: 3}, ['method1', 'method2']);
 ```
 The `options` object can take any options that the usual call to `retry.operation` can take.
 
-### new RetryOperation(timeouts)
+### new RetryOperation(timeouts, retryForever)
 
-Creates a new `RetryOperation` where `timeouts` is an array where each value is
-a timeout given in milliseconds.
+Creates a new `RetryOperation`.
+
+* `timeouts`: an array where each value is a timeout given in milliseconds.
+* `retryForever`: Whether to retry forever.
+
+If `retryForever` is true, the following changes happen:
+* `RetryOperation.errors()` will only output an array of one item: the last error.
+* `RetryOperation` will repeatedly use the last item in the `timeouts` array.
+
 
 #### retryOperation.errors()
 
