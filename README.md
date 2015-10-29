@@ -131,7 +131,7 @@ The `options` object can take any options that the usual call to `retry.operatio
 
 Creates a new `RetryOperation`.
 
-* `timeouts`: an array where each value is a timeout given in milliseconds.
+* `timeouts`: An array where each value is a timeout given in milliseconds.
 * `retryForever`: Whether to retry forever.
 
 If `retryForever` is true, the following changes happen:
