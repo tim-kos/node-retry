@@ -192,6 +192,8 @@ retry is licensed under the MIT license.
 
 # Changelog
 
+0.9.0 Adding `unref` functionality, thanks to @satazor.
+
 0.8.0 Implementing retry.wrap.
 
 0.7.0 Some bug fixes and made retry.createTimeout() public. Fixed issues [#10](https://github.com/tim-kos/node-retry/issues/10), [#12](https://github.com/tim-kos/node-retry/issues/12), and [#13](https://github.com/tim-kos/node-retry/issues/13).
