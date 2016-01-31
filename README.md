@@ -181,6 +181,10 @@ has been reached.
 Otherwise it returns `true`, and retries the operation after the timeout for
 the current attempt number.
 
+#### retryOperation.stop()
+
+Allows you to stop the operation being retried. Useful for aborting the operation on a fatal error etc.
+
 #### retryOperation.attempts()
 
 Returns an int representing the number of attempts it took to call `fn` before it was successful.

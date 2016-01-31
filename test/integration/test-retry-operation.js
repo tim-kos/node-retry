@@ -53,7 +53,6 @@ var retry = require(common.dir.lib + '/retry');
 })();
 
 (function testRetry() {
-  var times = 3;
   var error = new Error('some error');
   var operation = retry.operation([1, 2, 3]);
   var attempts = 0;
@@ -99,6 +98,37 @@ var retry = require(common.dir.lib + '/retry');
       assert.strictEqual(operation.attempts(), attempts);
       assert.strictEqual(operation.mainError(), error);
       finalCallback();
+    });
+  };
+
+  fn();
+})();
+
+(function testStop() {
+  var error = new Error('some error');
+  var operation = retry.operation([1, 2, 3]);
+  var attempts = 0;
+
+  var finalCallback = fake.callback('finalCallback');
+  fake.expectAnytime(finalCallback);
+
+  var fn = function() {
+    operation.attempt(function(currentAttempt) {
+      attempts++;
+      assert.equal(currentAttempt, attempts);
+
+      if (attempts === 2) {
+        operation.stop();
+
+        assert.strictEqual(attempts, 2);
+        assert.strictEqual(operation.attempts(), attempts);
+        assert.strictEqual(operation.mainError(), error);
+        finalCallback();
+      }
+
+      if (operation.retry(error)) {
+        return;
+      }
     });
   };
 
