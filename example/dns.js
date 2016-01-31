@@ -3,7 +3,7 @@ var retry = require('../lib/retry');
 
 function faultTolerantResolve(address, cb) {
   var opts = {
-    retries: 5,
+    retries: 2,
     factor: 2,
     minTimeout: 1 * 1000,
     maxTimeout: 2 * 1000,
@@ -13,11 +13,6 @@ function faultTolerantResolve(address, cb) {
 
   operation.attempt(function(currentAttempt) {
     dns.resolve(address, function(err, addresses) {
-      if(err && err.code === 'ENOTFOUND' && currentAttempt === 2) {
-        operation.stop();
-        return cb(operation.mainError(), operation.errors(), addresses)
-      }
-
       if (operation.retry(err)) {
         return;
       }
@@ -27,7 +22,7 @@ function faultTolerantResolve(address, cb) {
   });
 }
 
-faultTolerantResolve('nodejs0.org', function(err, errors, addresses) {
+faultTolerantResolve('nodejs.org', function(err, errors, addresses) {
   console.warn('err:');
   console.log(err);
 
