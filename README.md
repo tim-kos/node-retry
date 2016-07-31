@@ -139,7 +139,7 @@ Available options:
 
 If `forever` is true, the following changes happen:
 * `RetryOperation.errors()` will only output an array of one item: the last error.
-* `RetryOperation` will repeatedly use the last item in the `timeouts` array.
+* `RetryOperation` will repeatedly use the `timeouts` array. Once all of its timeouts have been used up, it restarts with the first timeout, then uses the second and so on.
 
 #### retryOperation.errors()
 
