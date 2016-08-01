@@ -104,3 +104,42 @@ var retry = require(common.dir.lib + '/retry');
 
   fn();
 })();
+
+(function testRetryForeverNoRetries() {
+  var error = new Error('some error');
+  var delay = 50
+  var operation = retry.operation({
+    retries: null,
+    forever: true,
+    minTimeout: delay,
+    maxTimeout: delay
+  });
+
+  var attempts = 0;
+  var startTime = new Date().getTime();
+
+  var finalCallback = fake.callback('finalCallback');
+  fake.expectAnytime(finalCallback);
+
+  var fn = function() {
+    operation.attempt(function(currentAttempt) {
+      attempts++;
+      assert.equal(currentAttempt, attempts);
+      if (attempts !== 4 && operation.retry(error)) {
+        return;
+      }
+
+      var endTime = new Date().getTime();
+      var minTime = startTime + (delay * 3);
+      var maxTime = minTime + 20 // add a little headroom for code execution time
+      assert(endTime > minTime)
+      assert(endTime < maxTime)
+      assert.strictEqual(attempts, 4);
+      assert.strictEqual(operation.attempts(), attempts);
+      assert.strictEqual(operation.mainError(), error);
+      finalCallback();
+    });
+  };
+
+  fn();
+})();
