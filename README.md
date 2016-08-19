@@ -78,7 +78,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 The formula used to calculate the individual timeouts is:
 
 ```
-var Math.min(random * minTimeout * Math.pow(factor, attempt), maxTimeout);
+Math.min(random * minTimeout * Math.pow(factor, attempt), maxTimeout)
 ```
 
 Have a look at [this article][article] for a better explanation of approach.
@@ -120,11 +120,11 @@ an array of method names which need to be wrapped.
 ```
 retry.wrap(obj)
 
-retry.wrap(obj, ['method1', 'method2']);
+retry.wrap(obj, ['method1', 'method2'])
 
-retry.wrap(obj, {retries: 3});
+retry.wrap(obj, {retries: 3})
 
-retry.wrap(obj, {retries: 3}, ['method1', 'method2']);
+retry.wrap(obj, {retries: 3}, ['method1', 'method2'])
 ```
 The `options` object can take any options that the usual call to `retry.operation` can take.
 
@@ -139,7 +139,7 @@ Available options:
 
 If `forever` is true, the following changes happen:
 * `RetryOperation.errors()` will only output an array of one item: the last error.
-* `RetryOperation` will repeatedly use the last item in the `timeouts` array.
+* `RetryOperation` will repeatedly use the `timeouts` array. Once all of its timeouts have been used up, it restarts with the first timeout, then uses the second and so on.
 
 #### retryOperation.errors()
 
