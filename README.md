@@ -196,6 +196,8 @@ retry is licensed under the MIT license.
 
 # Changelog
 
+0.10.0 Adding `stop` functionality, thanks to @maxnachlinger.
+
 0.9.0 Adding `unref` functionality, thanks to @satazor.
 
 0.8.0 Implementing retry.wrap.
