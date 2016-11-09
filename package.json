@@ -18,7 +18,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "fake": "0.2.0",
+    "fake": "0.2.2",
     "far": "0.0.1"
   }
 }
