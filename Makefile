@@ -18,5 +18,4 @@ release-patch: test
 	git push
 	npm publish
 
-.PHONY: test
-
+.PHONY: test release-major release-minor release-patch
