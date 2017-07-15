@@ -23,7 +23,7 @@ interface AttemptTimeoutOps {
 }
 
 interface Operation {
-  attempt: (cb: () => any, timeoutOps?: AttemptTimeoutOps) => void;
+  attempt: (cb: (currentAttempts: () => number) => any, timeoutOps?: AttemptTimeoutOps) => void;
   attempts: () => number;
   retry: (error: any) => boolean;
   stop: () => void;
