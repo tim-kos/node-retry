@@ -1,5 +1,6 @@
 <!-- badges/ -->
 [![Build Status](https://secure.travis-ci.org/tim-kos/node-retry.png?branch=master)](http://travis-ci.org/tim-kos/node-retry "Check this project's build status on TravisCI")
+[![codecov](https://codecov.io/gh/tim-kos/node-retry/branch/master/graph/badge.svg)](https://codecov.io/gh/tim-kos/node-retry)
 <!-- /badges -->
 
 # retry

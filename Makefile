@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 test:
-	@node test/runner.js
+	./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/*.js
 
 release-major: test
 	npm version major -m "Release %s"
