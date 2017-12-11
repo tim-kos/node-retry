@@ -14,7 +14,7 @@
   },
   "main": "index",
   "engines": {
-    "node": "*"
+    "node": ">= 4"
   },
   "dependencies": {},
   "devDependencies": {
