@@ -21,5 +21,8 @@
     "fake": "0.2.0",
     "istanbul": "^0.4.5",
     "tape": "^4.8.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/*.js"
   }
 }
