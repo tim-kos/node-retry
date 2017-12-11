@@ -143,8 +143,10 @@ If `forever` is true, the following changes happen:
 
 #### retryOperation.errors()
 
-Returns an array of all errors that have been passed to
-`retryOperation.retry()` so far.
+Returns an array of all errors that have been passed to `retryOperation.retry()` so far. The
+returning array has the errors ordered chronologically based on when they were passed to
+`retryOperation.retry()`, which means the first passed error is at index zero and the last is
+at the last index.
 
 #### retryOperation.mainError()
 
