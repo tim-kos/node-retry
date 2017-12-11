@@ -1,3 +1,7 @@
+<!-- badges/ -->
+[![Build Status](https://secure.travis-ci.org/tim-kos/node-retry.png?branch=master)](http://travis-ci.org/tim-kos/node-retry "Check this project's build status on TravisCI")
+<!-- /badges -->
+
 # retry
 
 Abstraction for exponential and custom retry strategies for failed operations.
