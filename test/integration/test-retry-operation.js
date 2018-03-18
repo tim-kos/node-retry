@@ -132,7 +132,7 @@ var retry = require(common.dir.lib + '/retry');
       var endTime = new Date().getTime();
       var minTime = startTime + (delay * 3);
       var maxTime = minTime + 20 // add a little headroom for code execution time
-      assert(endTime > minTime)
+      assert(endTime >= minTime)
       assert(endTime < maxTime)
       assert.strictEqual(attempts, 4);
       assert.strictEqual(operation.attempts(), attempts);
