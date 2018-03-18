@@ -174,3 +174,46 @@ var retry = require(common.dir.lib + '/retry');
 
   fn();
 })();
+
+(function testMaxRetryTime() {
+  var error = new Error('some error');
+  var maxRetryTime = 30;
+  var operation = retry.operation({
+      minTimeout: 1,
+      maxRetryTime: maxRetryTime
+  });
+  var attempts = 0;
+
+  var finalCallback = fake.callback('finalCallback');
+  fake.expectAnytime(finalCallback);
+
+  var longAsyncFunction = function (wait, callback){
+    setTimeout(callback, wait);
+  };
+
+  var fn = function() {
+    var startTime = Date.now();
+    operation.attempt(function(currentAttempt) {
+      attempts++;
+      assert.equal(currentAttempt, attempts);
+
+      if (attempts !== 2) {
+        if (operation.retry(error)) {
+            return;
+        }
+      } else {
+        longAsyncFunction(maxRetryTime - (Date.now() - startTime - 1), function(){
+          if (operation.retry(error)) {
+            assert.fail('timeout should be occured');
+            return;
+          }
+
+          assert.strictEqual(operation.mainError(), error);
+          finalCallback();
+        });
+      }
+    });
+  };
+
+  fn();
+})();
