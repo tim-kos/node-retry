@@ -192,7 +192,7 @@ var retry = require(common.dir.lib + '/retry');
   };
 
   var fn = function() {
-    var startTime = Date.now();
+    var startTime = new Date().getTime();
     operation.attempt(function(currentAttempt) {
       attempts++;
       assert.equal(currentAttempt, attempts);
@@ -202,7 +202,8 @@ var retry = require(common.dir.lib + '/retry');
             return;
         }
       } else {
-        longAsyncFunction(maxRetryTime - (Date.now() - startTime - 1), function(){
+        var curTime = new Date().getTime();
+        longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function(){
           if (operation.retry(error)) {
             assert.fail('timeout should be occured');
             return;
