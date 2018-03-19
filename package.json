@@ -19,7 +19,8 @@
   "dependencies": {},
   "devDependencies": {
     "fake": "0.2.0",
-    "far": "0.0.1"
+    "istanbul": "^0.4.5",
+    "tape": "^4.8.0"
   },
   "types": "./index.d.ts"
 }
