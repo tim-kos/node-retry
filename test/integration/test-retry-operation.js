@@ -205,7 +205,7 @@ var retry = require(common.dir.lib + '/retry');
         var curTime = new Date().getTime();
         longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function(){
           if (operation.retry(error)) {
-            assert.fail('timeout should be occured');
+            assert.fail('timeout should be occurred');
             return;
           }
 
