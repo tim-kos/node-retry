@@ -193,6 +193,10 @@ the current attempt number.
 
 Allows you to stop the operation being retried. Useful for aborting the operation on a fatal error etc.
 
+#### retryOperation.reset()
+
+Resets the internal state of the operation object, so that you can call `attempt()` again as if this was a new operation object.
+
 #### retryOperation.attempts()
 
 Returns an int representing the number of attempts it took to call `fn` before it was successful.

@@ -3,6 +3,45 @@ var assert = common.assert;
 var fake = common.fake.create();
 var retry = require(common.dir.lib + '/retry');
 
+(function testReset() {
+  var error = new Error('some error');
+  var operation = retry.operation([1, 2, 3]);
+  var attempts = 0;
+
+  var finalCallback = fake.callback('finalCallback');
+  fake.expectAnytime(finalCallback);
+
+  var expectedFinishes = 1;
+  var finishes         = 0;
+
+  var fn = function() {
+    operation.attempt(function(currentAttempt) {
+      attempts++;
+      assert.equal(currentAttempt, attempts);
+      if (operation.retry(error)) {
+        return;
+      }
+
+      finishes++
+      assert.equal(expectedFinishes, finishes);
+      assert.strictEqual(attempts, 4);
+      assert.strictEqual(operation.attempts(), attempts);
+      assert.strictEqual(operation.mainError(), error);
+
+      if (finishes < 2) {
+        attempts = 0;
+        expectedFinishes++;
+        operation.reset();
+        fn()
+      } else {
+        finalCallback();
+      }
+    });
+  };
+
+  fn();
+})();
+
 (function testErrors() {
   var operation = retry.operation();
 
@@ -53,7 +92,6 @@ var retry = require(common.dir.lib + '/retry');
 })();
 
 (function testRetry() {
-  var times = 3;
   var error = new Error('some error');
   var operation = retry.operation([1, 2, 3]);
   var attempts = 0;
