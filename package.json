@@ -14,7 +14,7 @@
   },
   "main": "index",
   "engines": {
-    "node": "*"
+    "node": ">= 4"
   },
   "dependencies": {},
   "devDependencies": {
@@ -22,5 +22,8 @@
     "istanbul": "^0.4.5",
     "tape": "^4.8.0"
   },
-  "types": "./index.d.ts"
+  "types": "./index.d.ts",
+  "scripts": {
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/*.js"
+  }
 }
