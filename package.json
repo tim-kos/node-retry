@@ -23,6 +23,10 @@
     "tape": "^4.8.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/*.js"
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/integration/*.js",
+    "release:major": "env SEMANTIC=major npm run release",
+    "release:minor": "env SEMANTIC=minor npm run release",
+    "release:patch": "env SEMANTIC=patch npm run release",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && git push && git push --tags && npm publish"
   }
 }
