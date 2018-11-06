@@ -62,7 +62,7 @@ var operation = retry.operation({
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with two additions:
+Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with three additions:
 
 * `forever`: Whether to retry forever, defaults to `false`.
 * `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
