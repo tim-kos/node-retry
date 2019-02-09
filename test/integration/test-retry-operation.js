@@ -7,6 +7,7 @@ var retry = require(common.dir.lib + '/retry');
   var error = new Error('some error');
   var operation = retry.operation([1, 2, 3]);
   var attempts = 0;
+  var allAttempts = 0; 
 
   var finalCallback = fake.callback('finalCallback');
   fake.expectAnytime(finalCallback);
@@ -14,32 +15,31 @@ var retry = require(common.dir.lib + '/retry');
   var expectedFinishes = 1;
   var finishes         = 0;
 
-  var fn = function() {
-    operation.attempt(function(currentAttempt) {
-      attempts++;
-      assert.equal(currentAttempt, attempts);
-      if (operation.retry(error)) {
-        return;
-      }
+  operation.attempt(function(currentAttempt) {
+    attempts++;
+    allAttempts++;
+    assert.equal(currentAttempt, attempts);
 
-      finishes++
-      assert.equal(expectedFinishes, finishes);
-      assert.strictEqual(attempts, 4);
-      assert.strictEqual(operation.attempts(), attempts);
-      assert.strictEqual(operation.mainError(), error);
+    // perform a single reset after 2 attempts
+    if (attempts === 2 && allAttempts === 2) {
+      attempts = 0;
+      operation.reset();
+      operation.retry();
+      return;
+    } 
 
-      if (finishes < 2) {
-        attempts = 0;
-        expectedFinishes++;
-        operation.reset();
-        fn()
-      } else {
-        finalCallback();
-      }
-    });
-  };
+    if (operation.retry(error)) {
+      return;
+    }
 
-  fn();
+    finishes++
+    assert.equal(expectedFinishes, finishes);
+    assert.strictEqual(allAttempts, 6);
+    assert.strictEqual(operation.attempts(), attempts);
+    assert.strictEqual(operation.mainError(), error);
+    finalCallback();
+  });
+
 })();
 
 (function testErrors() {

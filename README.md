@@ -195,7 +195,29 @@ Allows you to stop the operation being retried. Useful for aborting the operatio
 
 #### retryOperation.reset()
 
-Resets the internal state of the operation object, so that you can call `attempt()` again as if this was a new operation object.
+Resets the internal state of the operation object. You can then call `retry()` (passing an error not required), and the entire operation will begin again as if it's the first attempt.
+
+```
+var operation = retry.operation();
+operation.attempt(function(currentAttempt) {
+    var err;
+    try{
+        doSomething(); 
+    }
+    catch(e){
+        e = err;
+    }
+
+    if (needToStartFromScratch()){
+        operation.reset();
+        operation.retry();
+        return;
+    }
+
+    if (operation.retry(err)) return; 
+});
+```
+
 
 #### retryOperation.attempts()
 
