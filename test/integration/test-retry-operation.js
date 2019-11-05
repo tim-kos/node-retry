@@ -229,9 +229,6 @@ var retry = require(common.dir.lib + '/retry');
     setTimeout(callback, wait);
   };
 
-  var timeoutError = new Error('RetryOperation timeout occurred')
-  var expectedErrorMessages = [timeoutError, error, error].map(error => error.message)
-
   var fn = function() {
     var startTime = new Date().getTime();
     operation.attempt(function(currentAttempt) {
@@ -250,11 +247,45 @@ var retry = require(common.dir.lib + '/retry');
             return;
           }
 
-          assert.deepStrictEqual(operation._errors.map(error => error.message), expectedErrorMessages);
           assert.strictEqual(operation.mainError(), error);
           finalCallback();
         });
       }
+    });
+  };
+
+  fn();
+})();
+
+(function testErrorsPreservedWhenMaxRetryTimeExceeded() {
+  var error = new Error('some error');
+  var maxRetryTime = 30;
+  var operation = retry.operation({
+      minTimeout: 1,
+      maxRetryTime: maxRetryTime
+  });
+
+  var finalCallback = fake.callback('finalCallback');
+  fake.expectAnytime(finalCallback);
+
+  var longAsyncFunction = function (wait, callback){
+    setTimeout(callback, wait);
+  };
+
+  var fn = function() {
+    var startTime = new Date().getTime();
+    operation.attempt(function() {
+
+      var curTime = new Date().getTime();
+      longAsyncFunction(maxRetryTime - (curTime - startTime - 1), function(){
+        if (operation.retry(error)) {
+          assert.fail('timeout should be occurred');
+          return;
+        }
+
+        assert.strictEqual(operation.mainError(), error);
+        finalCallback();
+      });
     });
   };
 
