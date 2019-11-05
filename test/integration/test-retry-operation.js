@@ -229,6 +229,9 @@ var retry = require(common.dir.lib + '/retry');
     setTimeout(callback, wait);
   };
 
+  var timeoutError = new Error('RetryOperation timeout occurred')
+  var expectedErrorMessages = [timeoutError, error, error].map(error => error.message)
+
   var fn = function() {
     var startTime = new Date().getTime();
     operation.attempt(function(currentAttempt) {
@@ -247,6 +250,7 @@ var retry = require(common.dir.lib + '/retry');
             return;
           }
 
+          assert.deepStrictEqual(operation._errors.map(error => error.message), expectedErrorMessages);
           assert.strictEqual(operation.mainError(), error);
           finalCallback();
         });
