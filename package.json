@@ -9,6 +9,7 @@
     "type": "git",
     "url": "git://github.com/tim-kos/node-retry.git"
   },
+  "files": ["lib", "example"],
   "directories": {
     "lib": "./lib"
   },
