@@ -13,7 +13,7 @@
   "directories": {
     "lib": "./lib"
   },
-  "main": "index",
+  "main": "index.js",
   "engines": {
     "node": ">= 4"
   },
