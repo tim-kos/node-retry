@@ -65,8 +65,7 @@ var operation = retry.operation({
 Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with three additions:
 
 * `forever`: Whether to retry forever, defaults to `false`.
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
-* `maxRetryTime`: The maximum time (in milliseconds) that the retried operation is allowed to run. Default is `Infinity`.  
+* `unref`: Wether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
 
 ### retry.timeouts([options])
 
@@ -75,7 +74,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 
 `options` is a JS object that can contain any of the following keys:
 
-* `retries`: The maximum amount of times to retry the operation. Default is `10`. Seting this to `1` means `do it once, then retry it once`.
+* `retries`: The maximum amount of times to retry the operation. Default is `10`.
 * `factor`: The exponential factor to use. Default is `2`.
 * `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.
@@ -149,10 +148,8 @@ If `forever` is true, the following changes happen:
 
 #### retryOperation.errors()
 
-Returns an array of all errors that have been passed to `retryOperation.retry()` so far. The
-returning array has the errors ordered chronologically based on when they were passed to
-`retryOperation.retry()`, which means the first passed error is at index zero and the last is
-at the last index.
+Returns an array of all errors that have been passed to
+`retryOperation.retry()` so far.
 
 #### retryOperation.mainError()
 
@@ -192,10 +189,6 @@ the current attempt number.
 #### retryOperation.stop()
 
 Allows you to stop the operation being retried. Useful for aborting the operation on a fatal error etc.
-
-#### retryOperation.reset()
-
-Resets the internal state of the operation object, so that you can call `attempt()` again as if this was a new operation object.
 
 #### retryOperation.attempts()
 
