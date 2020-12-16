@@ -1,3 +1,8 @@
+<!-- badges/ -->
+[![Build Status](https://secure.travis-ci.org/tim-kos/node-retry.svg?branch=master)](http://travis-ci.org/tim-kos/node-retry "Check this project's build status on TravisCI")
+[![codecov](https://codecov.io/gh/tim-kos/node-retry/branch/master/graph/badge.svg)](https://codecov.io/gh/tim-kos/node-retry)
+<!-- /badges -->
+
 # retry
 
 Abstraction for exponential and custom retry strategies for failed operations.
@@ -57,7 +62,7 @@ var operation = retry.operation({
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with two additions:
+Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with three additions:
 
 * `forever`: Whether to retry forever, defaults to `false`.
 * `unref`: Wether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
