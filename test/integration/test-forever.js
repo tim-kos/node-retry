@@ -22,3 +22,19 @@ var retry = require(common.dir.lib + '/retry');
     }
   });
 })();
+
+(function testRetriesInfinity() {
+  const operation = retry.operation({
+    retries: Infinity,
+    minTimeout: 100,
+    maxTimeout: 100,
+  });
+
+  operation.attempt(function (numAttempt) {
+    if (numAttempt == 10) {
+      operation.stop();
+    }
+
+    operation.retry(new Error('foo'));
+  });
+})();
