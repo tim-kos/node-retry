@@ -58,6 +58,47 @@ var operation = retry.operation({
 });
 ```
 
+### Example with promises
+
+```javascript
+const retry = require('retry')
+const delay = require('delay')
+
+const isItGood = [false, false, true]
+let numAttempt = 0
+
+async function retryer() {
+  let operation = retry.operation()
+
+  return new Promise((resolve, reject) => {
+    operation.attempt(async currentAttempt => {
+      console.log('Attempt #:', numAttempt)
+      await delay(2000)
+
+      const err = !isItGood[numAttempt] ? true : null
+      if (operation.retry(err)) {
+        numAttempt++
+        return
+      }
+
+      if (isItGood[numAttempt]) {
+        resolve('All good!')
+      } else {
+        reject(operation.mainError())
+      }
+    })
+  })
+}
+
+async function main() {
+  console.log('Start')
+  await retryer()
+  console.log('End')
+}
+
+main()
+```
+
 ## API
 
 ### retry.operation([options])
