@@ -67,7 +67,7 @@ const delay = require('delay')
 const isItGood = [false, false, true]
 let numAttempt = 0
 
-async function retryer() {
+function retryer() {
   let operation = retry.operation()
 
   return new Promise((resolve, reject) => {
