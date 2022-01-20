@@ -2,6 +2,7 @@
   "author": "Tim Koschützki <tim@debuggable.com> (http://debuggable.com/)",
   "name": "retry",
   "description": "Abstraction for exponential and custom retry strategies for failed operations.",
+  "keywords": "retry, exponential backoff, auto-retry, multiple attempts, custom retry",
   "license": "MIT",
   "version": "0.13.1",
   "homepage": "https://github.com/tim-kos/node-retry",
