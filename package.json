@@ -17,7 +17,7 @@
   "directories": {
     "lib": "./lib"
   },
-  "main": "index.js",
+  "main": "index.mjs",
   "engines": {
     "node": ">= 4"
   },
