@@ -200,7 +200,7 @@ at the last index.
 A reference to the error object that occured most frequently. Errors are
 compared using the `error.message` property.
 
-If multiple error messages occured the same amount of time, the last error
+If multiple error messages occured the same number of times, the last error
 object with that message is returned.
 
 If no errors occured so far, the value is `null`.
