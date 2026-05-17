@@ -197,13 +197,13 @@ at the last index.
 
 #### retryOperation.mainError()
 
-A reference to the error object that occured most frequently. Errors are
+A reference to the error object that occurred most frequently. Errors are
 compared using the `error.message` property.
 
-If multiple error messages occured the same amount of time, the last error
+If multiple error messages occurred the same amount of time, the last error
 object with that message is returned.
 
-If no errors occured so far, the value is `null`.
+If no errors occurred so far, the value is `null`.
 
 #### retryOperation.attempt(fn, timeoutOps)
 
