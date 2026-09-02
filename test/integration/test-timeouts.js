@@ -67,3 +67,24 @@ var retry = require(common.dir.lib + '/retry');
   var timeouts = retry.timeouts({retries: 2});
   assert.strictEqual(timeouts.length, 2);
 })();
+
+(function testUndefinedOptionsKeepDefaults() {
+  var timeouts = retry.timeouts({
+    retries: 3,
+    minTimeout: undefined,
+    maxTimeout: undefined
+  });
+
+  assert.deepEqual(timeouts, [1000, 2000, 4000]);
+})();
+
+(function testUndefinedRetriesKeepsDefaultCount() {
+  var timeouts = retry.timeouts({
+    retries: undefined,
+    minTimeout: 1000
+  });
+
+  assert.equal(timeouts.length, 10);
+  assert.equal(timeouts[0], 1000);
+  assert.equal(timeouts[1], 2000);
+})();
