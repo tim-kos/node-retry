@@ -75,3 +75,21 @@ var retry = require(common.dir.lib + '/retry');
   assert.equal(timeouts[0], 1000);
   assert.equal(timeouts[9], 512000);
 })();
+
+(function testInfiniteRetriesBackOffUntilMaxTimeout() {
+  var timeouts = retry.timeouts({
+    retries: Infinity,
+    factor: 1.1,
+    minTimeout: 1000,
+    maxTimeout: 60000
+  });
+
+  assert.equal(timeouts.length, 44);
+  assert.ok(timeouts[42] < 60000);
+  assert.equal(timeouts[43], 60000);
+})();
+
+(function testInfiniteRetriesWithoutGrowth() {
+  assert.deepEqual(retry.timeouts({retries: Infinity, factor: 1, maxTimeout: 5000}), [1000]);
+  assert.deepEqual(retry.timeouts({retries: Infinity, minTimeout: 5000, maxTimeout: 5000}), [5000]);
+})();
