@@ -228,7 +228,22 @@ Returns `false` when no `error` value is given, or the maximum amount of retries
 has been reached.
 
 Otherwise it returns `true`, and retries the operation after the timeout for
-the current attempt number.
+the current attempt number. `retryOperation.nextTimeout()` tells you how long
+that timeout is.
+
+#### retryOperation.nextTimeout()
+
+Returns the number of milliseconds the operation waits before the retry that the
+last `retryOperation.retry()` call scheduled. Returns `null` if that call did not
+schedule a retry, or if no retry has been scheduled since the operation was
+created, `reset()` or `stop()`ped.
+
+```javascript
+if (operation.retry(err)) {
+  console.warn('Request failed, retrying in ' + operation.nextTimeout() + 'ms');
+  return;
+}
+```
 
 #### retryOperation.stop()
 
