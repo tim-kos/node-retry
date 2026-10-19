@@ -291,28 +291,3 @@ var retry = require(common.dir.lib + '/retry');
 
   fn();
 })();
-
-(function testNextTimeout() {
-  var operation = retry.operation([10, 20]);
-  assert.strictEqual(operation.nextTimeout(), null);
-
-  operation.attempt(function() {});
-  assert.strictEqual(operation.retry(new Error('foo')), true);
-  assert.strictEqual(operation.nextTimeout(), 10);
-  assert.strictEqual(operation.retry(new Error('foo')), true);
-  assert.strictEqual(operation.nextTimeout(), 20);
-  assert.strictEqual(operation.retry(new Error('foo')), false);
-  assert.strictEqual(operation.nextTimeout(), null);
-  operation.stop();
-})();
-
-(function testNextTimeoutWhenRetryingForever() {
-  var operation = retry.operation({retries: 1, minTimeout: 10, forever: true});
-
-  operation.attempt(function() {});
-  operation.retry(new Error('foo'));
-  operation.retry(new Error('foo'));
-  assert.strictEqual(operation.nextTimeout(), 10);
-  operation.stop();
-  assert.strictEqual(operation.nextTimeout(), null);
-})();

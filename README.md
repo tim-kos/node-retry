@@ -236,7 +236,8 @@ that timeout is.
 Returns the number of milliseconds the operation waits before the retry that the
 last `retryOperation.retry()` call scheduled. Returns `null` if that call did not
 schedule a retry, or if no retry has been scheduled since the operation was
-created, `reset()` or `stop()`ped.
+created, `reset()` or `stop()`ped. Call it right after `retry()`: inside the next
+attempt it still returns the timeout that led up to that attempt.
 
 ```javascript
 if (operation.retry(err)) {
