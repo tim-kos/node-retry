@@ -121,6 +121,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 * `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.
 * `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
+* `forever`: Whether the timeouts are for an operation that retries forever. If so and `retries` is `0`, one timeout is still returned, so there is a delay to repeat. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
 

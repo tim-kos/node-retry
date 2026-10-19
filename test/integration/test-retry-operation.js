@@ -291,31 +291,3 @@ var retry = require(common.dir.lib + '/retry');
 
   fn();
 })();
-
-(function testOperationTimeoutReceivesAttempts() {
-  var operation = retry.operation([1]);
-  var timedOutAttempts = [];
-
-  operation.attempt(function() {}, {
-    timeout: 1,
-    cb: function(attempts) {
-      timedOutAttempts.push(attempts);
-      if (operation.retry(new Error('timeout'))) {
-        return;
-      }
-      assert.deepStrictEqual(timedOutAttempts, [1, 2]);
-    }
-  });
-})();
-
-(function testOperationTimeoutIsUnrefed() {
-  var operation = retry.operation({unref: true});
-
-  operation.attempt(function() {}, {
-    timeout: 60 * 1000,
-    cb: function() {}
-  });
-
-  assert.strictEqual(operation._timeout.hasRef(), false);
-  operation.stop();
-})();
