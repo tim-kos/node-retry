@@ -11,12 +11,21 @@ jobs:
   build:
     strategy:
       matrix:
-        node-version: [12]
+        node-version: [18, 20, 22, 24]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run test
+  es5:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24
+    # The library supports Node >= 4, which CI no longer runs, so make sure it stays ES5.
+    - run: npx -y acorn@8.14.0 --ecma5 --silent index.js lib/retry.js lib/retry_operation.js
