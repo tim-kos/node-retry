@@ -116,7 +116,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 
 `options` is a JS object that can contain any of the following keys:
 
-* `retries`: The maximum amount of times to retry the operation. Default is `10`. Seting this to `1` means `do it once, then retry it once`.
+* `retries`: The maximum amount of times to retry the operation. Default is `10`. Seting this to `1` means `do it once, then retry it once`. Setting it to `Infinity` retries forever like `forever: true` does, with timeouts calculated for the default `10` retries.
 * `factor`: The exponential factor to use. Default is `2`.
 * `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.

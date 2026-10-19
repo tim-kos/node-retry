@@ -67,3 +67,11 @@ var retry = require(common.dir.lib + '/retry');
   var timeouts = retry.timeouts({retries: 2});
   assert.strictEqual(timeouts.length, 2);
 })();
+
+(function testInfiniteRetriesBuildFiniteTimeouts() {
+  var timeouts = retry.timeouts({retries: Infinity});
+
+  assert.equal(timeouts.length, 10);
+  assert.equal(timeouts[0], 1000);
+  assert.equal(timeouts[9], 512000);
+})();
