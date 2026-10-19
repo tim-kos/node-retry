@@ -22,3 +22,23 @@ var retry = require(common.dir.lib + '/retry');
     }
   });
 })();
+
+(function testInfiniteRetriesRetryForever() {
+  var operation = retry.operation({
+    retries: Infinity,
+    minTimeout: 1,
+    factor: 1
+  });
+
+  operation.attempt(function(numAttempt) {
+    if (operation.retry(new Error('foo'))) {
+      if (numAttempt === 20) {
+        operation.stop();
+        assert.equal(operation.errors().length, 1);
+      }
+      return;
+    }
+
+    assert.fail('stopped retrying after ' + numAttempt + ' attempts');
+  });
+})();
