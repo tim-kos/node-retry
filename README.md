@@ -121,6 +121,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 * `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.
 * `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
+* `forever`: Whether the timeouts are for an operation that retries forever. If so and `retries` is `0`, one timeout is still returned, so there is a delay to repeat. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
 
@@ -186,7 +187,7 @@ Available options:
 
 If `forever` is true, the following changes happen:
 * `RetryOperation.errors()` will only output an array of one item: the last error.
-* `RetryOperation` will repeatedly use the `timeouts` array. Once all of its timeouts have been used up, it restarts with the first timeout, then uses the second and so on.
+* `RetryOperation` will keep retrying with the last timeout once all of the `timeouts` have been used up.
 
 #### retryOperation.errors()
 
@@ -211,7 +212,7 @@ Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function can receive an optional `currentAttempt` callback that represents the number of attempts to execute `fn` so far.
 
 Optionally defines `timeoutOps` which is an object having a property `timeout` in miliseconds and a property `cb` callback function.
-Whenever your retry operation takes longer than `timeout` to execute, the timeout callback function `cb` is called.
+Whenever your retry operation takes longer than `timeout` to execute, the timeout callback function `cb` is called with the current attempt number.
 
 
 #### retryOperation.try(fn)
