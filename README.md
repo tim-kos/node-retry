@@ -103,10 +103,11 @@ main()
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. `options` is the same as `retry.timeouts()`'s `options`, with three additions:
+Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts()`'s options. Setting `forever` to `true` also makes the operation keep retrying after those timeouts run out.
 
-* `forever`: Whether to retry forever, defaults to `false`.
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
+Two additional options apply to the operation:
+
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's timeout. Defaults to `false`.
 * `maxRetryTime`: The maximum time (in milliseconds) that the retried operation is allowed to run. Default is `Infinity`.  
 
 ### retry.timeouts([options])
@@ -121,7 +122,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 * `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.
 * `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
-* `forever`: Whether the timeouts are for an operation that retries forever. If so and `retries` is `0`, one timeout is still returned, so there is a delay to repeat. Default is `false`.
+* `forever`: Whether the timeouts are for an operation that retries forever. If `true` and `retries` produces no timeouts (for example `0` or `null`), returns an array containing the first computed timeout, based on `minTimeout` and subject to `randomize` and `maxTimeout`. A forever `RetryOperation` repeats this delay between attempts. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
 
@@ -186,8 +187,8 @@ Available options:
 * `unref`: Wether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
 
 If `forever` is true, the following changes happen:
-* `RetryOperation.errors()` will only output an array of one item: the last error.
-* `RetryOperation` will keep retrying with the last timeout once all of the `timeouts` have been used up.
+* Once the `timeouts` array has been used up, `RetryOperation.errors()` keeps only the last error.
+* `RetryOperation` will keep retrying with the last element of the `timeouts` array once all of the `timeouts` have been used up. `maxRetryTime` and `stop()` still end the retries.
 
 #### retryOperation.errors()
 
@@ -209,10 +210,10 @@ If no errors occured so far, the value is `null`.
 #### retryOperation.attempt(fn, timeoutOps)
 
 Defines the function `fn` that is to be retried and executes it for the first
-time right away. The `fn` function can receive an optional `currentAttempt` callback that represents the number of attempts to execute `fn` so far.
+time right away. The `fn` function receives the current attempt number as its first argument, starting at `1`.
 
-Optionally defines `timeoutOps` which is an object having a property `timeout` in miliseconds and a property `cb` callback function.
-Whenever your retry operation takes longer than `timeout` to execute, the timeout callback function `cb` is called with the current attempt number.
+Optionally defines `timeoutOps`, an object with a `timeout` in milliseconds and a callback function `cb`.
+For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called with the same 1-based attempt number passed to `fn`. This is a notification only; your code is responsible for cancelling the work or calling `retry(error)` to retry.
 
 
 #### retryOperation.try(fn)
@@ -249,6 +250,11 @@ retry is licensed under the MIT license.
 
 
 # Changelog
+
+Unreleased:
+
+* The operation-timeout callback now receives `1` on the first attempt, where it previously received no argument. Later attempts already received their attempt number.
+* `unref: true` now also applies to the first attempt's operation-timeout timer. If nothing else keeps the event loop alive, the process may exit before this callback runs.
 
 0.10.0 Adding `stop` functionality, thanks to @maxnachlinger.
 

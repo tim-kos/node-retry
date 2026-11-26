@@ -21,12 +21,28 @@ var retry = require(common.dir.lib + '/retry');
 
 (function testOperationTimeoutIsUnrefed() {
   var operation = retry.operation({unref: true});
+  var originalSetTimeout = global.setTimeout;
+  var unrefCalls = 0;
 
-  operation.attempt(function() {}, {
-    timeout: 60 * 1000,
-    cb: function() {}
-  });
+  global.setTimeout = function(fn, delay) {
+    var timer = originalSetTimeout(fn, delay);
+    var originalUnref = timer.unref;
+    timer.unref = function() {
+      unrefCalls++;
+      return originalUnref.call(timer);
+    };
+    return timer;
+  };
 
-  assert.strictEqual(operation._timeout.hasRef(), false);
-  operation.stop();
+  try {
+    operation.attempt(function() {}, {
+      timeout: 60 * 1000,
+      cb: function() {}
+    });
+  } finally {
+    global.setTimeout = originalSetTimeout;
+    operation.stop();
+  }
+
+  assert.strictEqual(unrefCalls, 1);
 })();
