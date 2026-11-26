@@ -31,7 +31,7 @@ function checkDelays(operation, expectedDelays) {
   assert.deepStrictEqual(attempts, [1, 2, 3, 4, 5]);
 }
 
-[undefined, false, true].forEach(function(mode) {
+[undefined, false, 1, 'true', true].forEach(function(mode) {
   var options = {forever: true};
   if (mode !== undefined) {
     options.consistentOperationTimeouts = mode;

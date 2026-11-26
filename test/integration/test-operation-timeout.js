@@ -35,7 +35,7 @@ var factories = [
 ];
 
 factories.forEach(function(createOperation) {
-  [undefined, false, true].forEach(function(mode) {
+  [undefined, false, 1, 'true', true].forEach(function(mode) {
     [false, true].forEach(function(unref) {
       withTimers(function(timers) {
         var options = {retries: 1, minTimeout: 1, unref: unref};
@@ -81,20 +81,24 @@ factories.forEach(function(createOperation) {
 });
 
 (function testFirstTimeoutProcessLifetime() {
-  [undefined, false, true].forEach(function(mode) {
+  [undefined, false, 1, 'true', true].forEach(function(mode) {
     [false, true].forEach(function(unref) {
       var options = {unref: unref};
       if (mode !== undefined) {
         options.consistentOperationTimeouts = mode;
       }
-      var script = 'var retry = require(' + JSON.stringify(common.dir.lib + '/retry') + ');' +
-        'retry.operation(' + JSON.stringify(options) + ').attempt(function() {}, {' +
-        'timeout: 20, cb: function() { console.log("timeout"); }});';
-      var output = execFileSync(process.execPath, ['-e', script], {
-        encoding: 'utf8',
-        timeout: 5000
+      [false, true].forEach(function(directConstructor) {
+        var createOperation = directConstructor ?
+          'new (require(' + JSON.stringify(common.dir.lib + '/retry_operation') + '))([1], ' + JSON.stringify(options) + ')' :
+            'require(' + JSON.stringify(common.dir.lib + '/retry') + ').operation(' + JSON.stringify(options) + ')';
+        var script = createOperation + '.attempt(function() {}, {' +
+          'timeout: 20, cb: function() { console.log("timeout"); }});';
+        var output = execFileSync(process.execPath, ['-e', script], {
+          encoding: 'utf8',
+          timeout: 5000
+        });
+        assert.strictEqual(output, mode === true && unref ? '' : 'timeout\n');
       });
-      assert.strictEqual(output, mode === true && unref ? '' : 'timeout\n');
     });
   });
 })();

@@ -107,9 +107,9 @@ Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts(
 
 Three additional options apply to the operation:
 
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) retry-delay timers and operation-timeout timers on retries. The first attempt's operation-timeout timer is also unreferenced when `consistentOperationTimeouts` is `true`. Default is `false`.
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) retry-delay timers and the operation-timeout timers of later attempts. The first attempt's operation-timeout timer is also unreferenced when `consistentOperationTimeouts` is `true`. Default is `false`.
 * `maxRetryTime`: The maximum total elapsed time in milliseconds since `attempt()` was called. Retries do not reset this time budget. It is checked when `retry(error)` is called; once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`; `0` also means no limit.
-* `consistentOperationTimeouts`: Set to `true` to pass the attempt number to the first operation-timeout callback, apply `unref` to that first timer as well, and pass repeated forever delays to `setTimeout` as numbers. By default, the first callback gets no arguments, the first timer remains referenced even with `unref: true`, and repeated forever delays are passed as one-element arrays. Later attempts already pass their attempt number and honor `unref`. Only the value `true` enables this mode; default is `false`.
+* `consistentOperationTimeouts`: Set to `true` to pass the attempt number to the first attempt's operation-timeout callback, apply `unref` to that operation-timeout timer as well, and pass the last timeout value directly to `setTimeout` for repeated forever delays. By default, the first attempt's operation-timeout callback gets no arguments, the first attempt's operation-timeout timer remains referenced even with `unref: true`, and repeated forever delays are passed as arrays. Later attempts already pass their attempt number and honor `unref`. Combined with `unref: true`, the process may exit before the first attempt's operation-timeout callback runs if nothing else keeps the event loop alive. The forever delay change applies even without `timeoutOps` and is visible to timer wrappers such as fake timers. Only the value `true` enables this mode; default is `false`.
 
 ### retry.timeouts([options])
 
@@ -185,7 +185,7 @@ a timeout given in milliseconds.
 
 Available options:
 * `forever`: Whether to retry forever, defaults to `false`.
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) retry-delay timers and operation-timeout timers on retries. The first attempt's operation-timeout timer is also unreferenced when `consistentOperationTimeouts` is `true`. Default is `false`.
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) retry-delay timers and the operation-timeout timers of later attempts. The first attempt's operation-timeout timer is also unreferenced when `consistentOperationTimeouts` is `true`. Default is `false`.
 * `maxRetryTime`: The maximum total elapsed time in milliseconds since `attempt()` was called. Retries do not reset this time budget. It is checked when `retry(error)` is called; once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`; `0` also means no limit.
 * `consistentOperationTimeouts`: The same opt-in behavior described under `retry.operation()`. Default is `false`.
 
@@ -259,7 +259,7 @@ retry is licensed under the MIT license.
 
 Unreleased:
 
-* Add `consistentOperationTimeouts: true` to opt in to consistent timeout behavior: the first operation-timeout callback receives the attempt number, `unref: true` also applies to the first attempt's operation-timeout timer, and forever retries pass repeated delays as numbers instead of one-element arrays. Existing defaults are preserved. In the opt-in mode, an unreferenced first timeout can let the process exit before its callback runs if nothing else keeps the event loop alive. Node's native forever-retry timing is unchanged in both modes.
+* Add `consistentOperationTimeouts: true` to opt in to consistent timeout behavior: the first operation-timeout callback receives the attempt number, `unref: true` also applies to the first attempt's operation-timeout timer, and forever retries pass the last timeout value directly instead of an array slice (a number instead of a one-element array for generated timeouts). Existing defaults are preserved. In the opt-in mode, an unreferenced first timeout can let the process exit before its callback runs if nothing else keeps the event loop alive. Node's native forever-retry timing is unchanged in both modes.
 * Document `retry.timeouts()`'s `forever` option and correct the description of forever retry delays: the last array element is reused, rather than cycling through the array.
 
 0.10.0 Adding `stop` functionality, thanks to @maxnachlinger.
