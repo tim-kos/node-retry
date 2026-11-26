@@ -103,12 +103,12 @@ main()
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts()`'s options. Setting `forever` to `true` also makes the operation keep retrying after those timeouts run out.
+Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts()`'s options. Setting `forever` to `true` also makes the operation keep retrying after those timeouts run out, waiting the last computed timeout before each further attempt.
 
 Two additional options apply to the operation:
 
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's timeout. Defaults to `false`.
-* `maxRetryTime`: The maximum time (in milliseconds) that the retried operation is allowed to run. Default is `Infinity`.  
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's operation timeout (`timeoutOps.timeout`). Defaults to `false`.
+* `maxRetryTime`: A time limit in milliseconds, checked when `retry(error)` is called. Once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`.
 
 ### retry.timeouts([options])
 
@@ -122,7 +122,7 @@ milliseconds. If `options` is an array, a copy of that array is returned.
 * `minTimeout`: The number of milliseconds before starting the first retry. Default is `1000`.
 * `maxTimeout`: The maximum number of milliseconds between two retries. Default is `Infinity`.
 * `randomize`: Randomizes the timeouts by multiplying with a factor between `1` to `2`. Default is `false`.
-* `forever`: Whether the timeouts are for an operation that retries forever. If `true` and `retries` produces no timeouts (for example `0` or `null`), returns an array containing the first computed timeout, based on `minTimeout` and subject to `randomize` and `maxTimeout`. A forever `RetryOperation` repeats this delay between attempts. Default is `false`.
+* `forever`: When `true`, adds the first computed timeout if `retries` would otherwise produce none (for example `0` or `null`). This timeout is based on `minTimeout` and subject to `randomize` and `maxTimeout`, giving a forever `RetryOperation` a delay to repeat. Default is `false`.
 
 The formula used to calculate the individual timeouts is:
 
@@ -184,18 +184,20 @@ a timeout given in milliseconds.
 
 Available options:
 * `forever`: Whether to retry forever, defaults to `false`.
-* `unref`: Wether to [unref](https://nodejs.org/api/timers.html#timers_unref) the setTimeout's, defaults to `false`.
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's operation timeout (`timeoutOps.timeout`). Defaults to `false`.
+* `maxRetryTime`: A time limit in milliseconds, checked when `retry(error)` is called. Once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`.
 
 If `forever` is true, the following changes happen:
-* Once the `timeouts` array has been used up, `RetryOperation.errors()` keeps only the last error.
+* Each retry that reuses the last timeout trims the stored errors to the most recent error. A `retry(error)` call that reaches `maxRetryTime` or occurs after `stop()` skips this trimming.
 * `RetryOperation` will keep retrying with the last element of the `timeouts` array once all of the `timeouts` have been used up. `maxRetryTime` and `stop()` still end the retries.
 
 #### retryOperation.errors()
 
-Returns an array of all errors that have been passed to `retryOperation.retry()` so far. The
-returning array has the errors ordered chronologically based on when they were passed to
-`retryOperation.retry()`, which means the first passed error is at index zero and the last is
-at the last index.
+Returns an array of the errors currently stored by the operation. Errors passed to
+`retryOperation.retry()` are ordered chronologically. In forever mode, each retry that
+reuses the last timeout discards earlier errors. If `maxRetryTime` is reached, the final
+error is appended and a `RetryOperation timeout occurred` error is prepended without
+trimming existing errors. A `retry(error)` call after `stop()` also appends without trimming.
 
 #### retryOperation.mainError()
 
@@ -213,7 +215,9 @@ Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function receives the current attempt number as its first argument, starting at `1`.
 
 Optionally defines `timeoutOps`, an object with a `timeout` in milliseconds and a callback function `cb`.
-For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called with the same 1-based attempt number passed to `fn`. This is a notification only; your code is responsible for cancelling the work or calling `retry(error)` to retry.
+For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called with the current 1-based attempt number. The callback only sends a notification; it does not cancel work or start a retry.
+
+Call `retry()` at most once per attempt. To retry on timeout, call `retry(error)` from `cb` and cancel the timed-out work or ignore its late result, so its completion handler cannot also call `retry()` or report a result. Otherwise, `fn` can run concurrently or run again after success has been reported.
 
 
 #### retryOperation.try(fn)
@@ -254,7 +258,8 @@ retry is licensed under the MIT license.
 Unreleased:
 
 * The operation-timeout callback now receives `1` on the first attempt, where it previously received no argument. Later attempts already received their attempt number.
-* `unref: true` now also applies to the first attempt's operation-timeout timer. If nothing else keeps the event loop alive, the process may exit before this callback runs.
+* `unref: true` now also applies to the first attempt's operation-timeout timer. If nothing else keeps the event loop alive, the process may exit before the operation-timeout callback runs.
+* Forever retries now pass the repeated delay to `setTimeout` as a number instead of a one-element array. Node's retry timing is unchanged: the last timeout was already reused. The README's description of cycling through the timeouts was incorrect.
 
 0.10.0 Adding `stop` functionality, thanks to @maxnachlinger.
 
