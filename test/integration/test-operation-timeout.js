@@ -1,48 +1,100 @@
 var common = require('../common');
 var assert = common.assert;
 var retry = require(common.dir.lib + '/retry');
+var RetryOperation = require(common.dir.lib + '/retry_operation');
+var execFileSync = require('child_process').execFileSync;
 
-(function testOperationTimeoutReceivesAttempts() {
-  var operation = retry.operation([1]);
-  var timedOutAttempts = [];
-
-  operation.attempt(function() {}, {
-    timeout: 1,
-    cb: function(attempts) {
-      timedOutAttempts.push(attempts);
-      operation.retry(new Error('timeout'));
-    }
-  });
-
-  process.on('exit', function() {
-    assert.deepStrictEqual(timedOutAttempts, [1, 2]);
-  });
-})();
-
-(function testOperationTimeoutIsUnrefed() {
-  var operation = retry.operation({unref: true});
+function withTimers(fn) {
   var originalSetTimeout = global.setTimeout;
-  var unrefCalls = 0;
+  var originalClearTimeout = global.clearTimeout;
+  var timers = [];
 
-  global.setTimeout = function(fn, delay) {
-    var timer = originalSetTimeout(fn, delay);
-    var originalUnref = timer.unref;
-    timer.unref = function() {
-      unrefCalls++;
-      return originalUnref.call(timer);
+  global.setTimeout = function(callback, delay) {
+    var timer = {
+      callback: callback,
+      delay: delay,
+      unrefCalls: 0,
+      unref: function() { this.unrefCalls++; }
     };
+    timers.push(timer);
     return timer;
   };
+  global.clearTimeout = function(timer) { timer.cleared = true; };
 
   try {
-    operation.attempt(function() {}, {
-      timeout: 60 * 1000,
-      cb: function() {}
-    });
+    fn(timers);
   } finally {
     global.setTimeout = originalSetTimeout;
-    operation.stop();
+    global.clearTimeout = originalClearTimeout;
   }
+}
 
-  assert.strictEqual(unrefCalls, 1);
+var factories = [
+  function(options) { return retry.operation(options); },
+  function(options) { return new RetryOperation([1], options); }
+];
+
+factories.forEach(function(createOperation) {
+  [undefined, false, true].forEach(function(mode) {
+    [false, true].forEach(function(unref) {
+      withTimers(function(timers) {
+        var options = {retries: 1, minTimeout: 1, unref: unref};
+        if (mode !== undefined) {
+          options.consistentOperationTimeouts = mode;
+        }
+        var operation = createOperation(options);
+        var attempts = [];
+        var timeoutArguments = [];
+        var timeoutReceivers = [];
+        var retryResults = [];
+
+        operation.attempt(function(attempt) {
+          attempts.push(attempt);
+        }, {
+          timeout: 10,
+          cb: function() {
+            timeoutArguments.push(Array.prototype.slice.call(arguments));
+            timeoutReceivers.push(this);
+            retryResults.push(operation.retry(new Error('timeout')));
+          }
+        });
+
+        assert.strictEqual(timers[0].delay, 10);
+        timers[0].callback();
+        assert.strictEqual(timers[0].cleared, true);
+        assert.strictEqual(timers[1].delay, 1);
+        timers[1].callback();
+        assert.strictEqual(timers[2].delay, 10);
+        timers[2].callback();
+
+        assert.deepStrictEqual(attempts, [1, 2]);
+        assert.deepStrictEqual(timeoutArguments, mode === true ? [[1], [2]] : [[], [2]]);
+        assert.deepStrictEqual(timeoutReceivers, [operation, operation]);
+        assert.deepStrictEqual(retryResults, [true, false]);
+        assert.strictEqual(timers.length, 3);
+        assert.deepStrictEqual(timers.map(function(timer) {
+          return timer.unrefCalls;
+        }), unref ? [mode === true ? 1 : 0, 1, 1] : [0, 0, 0]);
+      });
+    });
+  });
+});
+
+(function testFirstTimeoutProcessLifetime() {
+  [undefined, false, true].forEach(function(mode) {
+    [false, true].forEach(function(unref) {
+      var options = {unref: unref};
+      if (mode !== undefined) {
+        options.consistentOperationTimeouts = mode;
+      }
+      var script = 'var retry = require(' + JSON.stringify(common.dir.lib + '/retry') + ');' +
+        'retry.operation(' + JSON.stringify(options) + ').attempt(function() {}, {' +
+        'timeout: 20, cb: function() { console.log("timeout"); }});';
+      var output = execFileSync(process.execPath, ['-e', script], {
+        encoding: 'utf8',
+        timeout: 5000
+      });
+      assert.strictEqual(output, mode === true && unref ? '' : 'timeout\n');
+    });
+  });
 })();

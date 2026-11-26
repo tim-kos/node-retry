@@ -105,10 +105,11 @@ main()
 
 Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts()`'s options. Setting `forever` to `true` also makes the operation keep retrying after those timeouts run out, waiting the last (largest) entry in the generated `timeouts` array before each further attempt.
 
-Two additional options apply to the operation:
+Three additional options apply to the operation:
 
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's operation timeout (`timeoutOps.timeout`). Defaults to `false`.
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) retry-delay timers and operation-timeout timers on retries. The first attempt's operation-timeout timer is also unreferenced when `consistentOperationTimeouts` is `true`. Default is `false`.
 * `maxRetryTime`: The maximum total elapsed time in milliseconds since `attempt()` was called. Retries do not reset this time budget. It is checked when `retry(error)` is called; once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`; `0` also means no limit.
+* `consistentOperationTimeouts`: Set to `true` to pass the attempt number to the first operation-timeout callback, apply `unref` to that first timer as well, and pass repeated forever delays to `setTimeout` as numbers. By default, the first callback gets no arguments, the first timer remains referenced even with `unref: true`, and repeated forever delays are passed as one-element arrays. Later attempts already pass their attempt number and honor `unref`. Only the value `true` enables this mode; default is `false`.
 
 ### retry.timeouts([options])
 
@@ -184,8 +185,9 @@ a timeout given in milliseconds.
 
 Available options:
 * `forever`: Whether to retry forever, defaults to `false`.
-* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's operation timeout (`timeoutOps.timeout`). Defaults to `false`.
+* `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) retry-delay timers and operation-timeout timers on retries. The first attempt's operation-timeout timer is also unreferenced when `consistentOperationTimeouts` is `true`. Default is `false`.
 * `maxRetryTime`: The maximum total elapsed time in milliseconds since `attempt()` was called. Retries do not reset this time budget. It is checked when `retry(error)` is called; once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`; `0` also means no limit.
+* `consistentOperationTimeouts`: The same opt-in behavior described under `retry.operation()`. Default is `false`.
 
 If `forever` is true, the following changes happen:
 * Each retry that reuses the last timeout trims the stored errors to the most recent error. A `retry(error)` call that reaches `maxRetryTime` or occurs after `stop()` skips this trimming.
@@ -215,7 +217,7 @@ Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function receives the current attempt number as its first argument, starting at `1`.
 
 Optionally defines `timeoutOps`, an object with a `timeout` in milliseconds and a callback function `cb`.
-For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called with the current 1-based attempt number. Calling `cb` is only a notification: the library does not cancel the running work or start a retry on its own.
+For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called. By default, the first attempt's callback receives no arguments; callbacks on later attempts receive the current 1-based attempt number. With `consistentOperationTimeouts: true`, the first attempt's callback also receives its attempt number. Calling `cb` is only a notification: the library does not cancel the running work or start a retry on its own.
 
 Call `retry()` at most once per attempt. To retry on timeout, call `retry(error)` from `cb` and ensure the timed-out work's completion handler cannot also call `retry()` or report a result, either by cancelling the work or by ignoring its late result. Ignoring the late result leaves the work running, so cancel it if attempts must not overlap. If the late handler can still call `retry()`, duplicate attempts can run or work can restart after success has been reported. If the `retry(error)` call in `cb` returns `false`, report the final failure from `cb`.
 
@@ -257,9 +259,8 @@ retry is licensed under the MIT license.
 
 Unreleased:
 
-* The operation-timeout callback now receives `1` on the first attempt, where it previously received no argument. Later attempts already received their attempt number.
-* `unref: true` now also applies to the first attempt's operation-timeout timer. If nothing else keeps the event loop alive, the process may exit before the operation-timeout callback runs.
-* Forever retries now pass the repeated delay to `setTimeout` as a number instead of a one-element array. Node's retry timing is unchanged: the last timeout was already reused. The README's description of cycling through the timeouts was incorrect.
+* Add `consistentOperationTimeouts: true` to opt in to consistent timeout behavior: the first operation-timeout callback receives the attempt number, `unref: true` also applies to the first attempt's operation-timeout timer, and forever retries pass repeated delays as numbers instead of one-element arrays. Existing defaults are preserved. In the opt-in mode, an unreferenced first timeout can let the process exit before its callback runs if nothing else keeps the event loop alive. Node's native forever-retry timing is unchanged in both modes.
+* Document `retry.timeouts()`'s `forever` option and correct the description of forever retry delays: the last array element is reused, rather than cycling through the array.
 
 0.10.0 Adding `stop` functionality, thanks to @maxnachlinger.
 
