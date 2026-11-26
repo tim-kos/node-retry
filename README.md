@@ -103,12 +103,12 @@ main()
 
 ### retry.operation([options])
 
-Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts()`'s options. Setting `forever` to `true` also makes the operation keep retrying after those timeouts run out, waiting the last computed timeout before each further attempt.
+Creates a new `RetryOperation` object. `options` accepts all of `retry.timeouts()`'s options. Setting `forever` to `true` also makes the operation keep retrying after those timeouts run out, waiting the last (largest) entry in the generated `timeouts` array before each further attempt.
 
 Two additional options apply to the operation:
 
 * `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's operation timeout (`timeoutOps.timeout`). Defaults to `false`.
-* `maxRetryTime`: A time limit in milliseconds, checked when `retry(error)` is called. Once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`.
+* `maxRetryTime`: The maximum total elapsed time in milliseconds since `attempt()` was called. Retries do not reset this time budget. It is checked when `retry(error)` is called; once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`; `0` also means no limit.
 
 ### retry.timeouts([options])
 
@@ -185,7 +185,7 @@ a timeout given in milliseconds.
 Available options:
 * `forever`: Whether to retry forever, defaults to `false`.
 * `unref`: Whether to [unref](https://nodejs.org/api/timers.html#timers_unref) all retry-delay and per-attempt timeout timers, including the first attempt's operation timeout (`timeoutOps.timeout`). Defaults to `false`.
-* `maxRetryTime`: A time limit in milliseconds, checked when `retry(error)` is called. Once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`.
+* `maxRetryTime`: The maximum total elapsed time in milliseconds since `attempt()` was called. Retries do not reset this time budget. It is checked when `retry(error)` is called; once reached, that call returns `false` instead of scheduling another attempt. It does not interrupt running work. Default is `Infinity`; `0` also means no limit.
 
 If `forever` is true, the following changes happen:
 * Each retry that reuses the last timeout trims the stored errors to the most recent error. A `retry(error)` call that reaches `maxRetryTime` or occurs after `stop()` skips this trimming.
@@ -215,9 +215,9 @@ Defines the function `fn` that is to be retried and executes it for the first
 time right away. The `fn` function receives the current attempt number as its first argument, starting at `1`.
 
 Optionally defines `timeoutOps`, an object with a `timeout` in milliseconds and a callback function `cb`.
-For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called with the current 1-based attempt number. The callback only sends a notification; it does not cancel work or start a retry.
+For each attempt, if `timeout` milliseconds elapse before `retry()` or `stop()` clears the timer, `cb` is called with the current 1-based attempt number. Calling `cb` is only a notification: the library does not cancel the running work or start a retry on its own.
 
-Call `retry()` at most once per attempt. To retry on timeout, call `retry(error)` from `cb` and cancel the timed-out work or ignore its late result, so its completion handler cannot also call `retry()` or report a result. Otherwise, `fn` can run concurrently or run again after success has been reported.
+Call `retry()` at most once per attempt. To retry on timeout, call `retry(error)` from `cb` and ensure the timed-out work's completion handler cannot also call `retry()` or report a result, either by cancelling the work or by ignoring its late result. Ignoring the late result leaves the work running, so cancel it if attempts must not overlap. If the late handler can still call `retry()`, duplicate attempts can run or work can restart after success has been reported. If the `retry(error)` call in `cb` returns `false`, report the final failure from `cb`.
 
 
 #### retryOperation.try(fn)
